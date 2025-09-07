@@ -14,7 +14,8 @@ import node from "@astrojs/node";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://example.com",
+  site: (process.env.VERCEL_PROJECT_PRODUCTION_URL ??=
+    "https://www.nikolailehbr.ink"),
   integrations: [mdx(), sitemap(), react()],
   vite: {
     plugins: [tailwindcss()],
