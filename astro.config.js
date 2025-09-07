@@ -10,14 +10,19 @@ import react from "@astrojs/react";
 
 import vercel from "@astrojs/vercel";
 
+import node from "@astrojs/node";
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://example.com",
   integrations: [mdx(), sitemap(), react()],
-
   vite: {
     plugins: [tailwindcss()],
   },
-
-  adapter: vercel(),
+  // Local preview doesnt work with Vercel adapter, but with Node
+  adapter: process.env.VERCEL
+    ? vercel()
+    : node({
+        mode: "standalone",
+      }),
 });
