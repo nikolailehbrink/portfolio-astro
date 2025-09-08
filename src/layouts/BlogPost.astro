@@ -16,9 +16,9 @@ const {
   publicationDate,
   modificationDate,
   cover,
-  authors,
+  authors: authorsReferences,
 } = Astro.props;
-const authorData = await getEntries(authors);
+const authors = await getEntries(authorsReferences);
 ---
 
 <RootLayout>
@@ -26,10 +26,10 @@ const authorData = await getEntries(authors);
   <Header />
   <main>
     {
-      authorData && authorData.length > 0 && (
+      authors && authors.length > 0 && (
         <div class="prose" style="text-align: center; margin-bottom: 2em;">
           Written by
-          {authorData.map(({ data }, index) => (
+          {authors.map(({ data }, index) => (
             <span>
               {data.x ? (
                 <a href={data.x} target="_blank" rel="noopener noreferrer">
@@ -38,7 +38,7 @@ const authorData = await getEntries(authors);
               ) : (
                 <span>{data.name}</span>
               )}
-              {index < authorData.length - 1 && ", "}
+              {index < authors.length - 1 && ", "}
             </span>
           ))}
         </div>
