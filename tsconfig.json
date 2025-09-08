@@ -12,5 +12,8 @@
         "./src/*"
       ]
     }
+  },
+  "mdx": {
+    "checkMdx": true
   }
 }
