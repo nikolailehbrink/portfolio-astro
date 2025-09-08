@@ -7,8 +7,9 @@ import FormattedDate from "../components/FormattedDate.astro";
 import Header from "../components/Header.astro";
 import { getEntries } from "astro:content";
 import RootLayout from "./RootLayout.astro";
+import type { ReadingTime } from "@/lib/readingTime";
 
-type Props = CollectionEntry<"blog">["data"];
+type Props = CollectionEntry<"blog">["data"] & { readingTime: ReadingTime };
 
 const {
   title,
@@ -17,12 +18,13 @@ const {
   modificationDate,
   cover,
   authors: authorsReferences,
+  readingTime,
 } = Astro.props;
 const authors = await getEntries(authorsReferences);
 ---
 
 <RootLayout>
-  <BaseHead title={title} description={description} slot="head" />
+  <BaseHead title={title} description={description} image={cover} slot="head" />
   <Header />
   <main>
     {
@@ -45,6 +47,13 @@ const authors = await getEntries(authorsReferences);
       )
     }
     <article>
+      {
+        readingTime && (
+          <div class="prose" style="text-align: center; margin-bottom: 2em;">
+            {readingTime} min read
+          </div>
+        )
+      }
       <div class="hero-image">
         {cover && <Image width={1020} height={510} src={cover} alt="" />}
       </div>
