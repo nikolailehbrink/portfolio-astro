@@ -20,6 +20,10 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
+  server: {
+    open: true,
+    host: true,
+  },
   // Local preview doesnt work with Vercel adapter, but with Node
   adapter: process.env.VERCEL
     ? vercel()
