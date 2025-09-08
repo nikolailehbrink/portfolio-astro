@@ -26,7 +26,10 @@ export default defineConfig({
   },
   // Local preview doesnt work with Vercel adapter, but with Node
   adapter: process.env.VERCEL
-    ? vercel()
+    ? vercel({
+        imageService: true,
+        skewProtection: true,
+      })
     : node({
         mode: "standalone",
       }),
