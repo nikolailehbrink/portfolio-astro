@@ -1,0 +1,51 @@
+---
+import "@fontsource-variable/inter";
+import interLatin from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
+import BaseHead from "@/components/BaseHead.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
+import Analytics from "@vercel/analytics/astro";
+import "../styles/global.css";
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<html lang="en">
+  <head>
+    <!-- Global Metadata -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="theme-color" content="#171717" />
+
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={SITE_TITLE}
+      href={new URL("rss.xml", Astro.site)}
+    />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Font preloads -->
+    <link
+      rel="preload"
+      href={interLatin}
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Vercel Analytics -->
+    <Analytics />
+
+    <slot name="head">
+      <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    </slot>
+  </head>
+  <body class="font-sans">
+    <slot />
+  </body>
+</html>
