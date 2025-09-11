@@ -51,4 +51,32 @@ const authors = defineCollection({
     }),
 });
 
-export const collections = { blog, authors };
+const companies = defineCollection({
+  loader: file("src/data/companies.json"),
+  schema: ({ image }) =>
+    z
+      .object({
+        title: z.string(),
+        description: z.string(),
+        startDate: z.coerce.date(),
+        endDate: z.coerce.date().optional(),
+        logo: image(),
+        website: z.string().url().optional(),
+      })
+      .strict(),
+});
+
+const projects = defineCollection({
+  loader: file("src/data/projects.json"),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      description: z.string(),
+      image: image(),
+      link: z.string().url().optional(),
+      github: z.string().url().optional(),
+      tags: z.array(z.string().min(1)),
+    }),
+});
+
+export const collections = { blog, authors, companies, projects };
