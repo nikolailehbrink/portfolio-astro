@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" fill="none">
-  <path fill="url(#a)" d="M0 0h256v256H0z" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" fill="none">
+  <path fill="url(#hsb)" d="M0 0h256v256H0z" />
   <path
     fill="#fff"
     fill-rule="evenodd"
@@ -8,7 +8,7 @@
   />
   <defs>
     <linearGradient
-      id="a"
+      id="hsb"
       x1="128"
       x2="128"
       y1="0"
