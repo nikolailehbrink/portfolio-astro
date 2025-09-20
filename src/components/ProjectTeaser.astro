@@ -1,0 +1,89 @@
+---
+import { cn } from "@/lib/utils";
+import { Badge } from "@/components/react/ui/badge";
+import { GithubLogoIcon, LinkSimpleIcon } from "@phosphor-icons/react";
+import type { CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
+import type { HTMLAttributes } from "astro/types";
+
+type Props = CollectionEntry<"projects">["data"] & HTMLAttributes<"div">;
+
+const {
+  tags,
+  description,
+  image,
+  title,
+  github,
+  link,
+  class: className,
+  ...props
+} = Astro.props;
+---
+
+<div
+  class={cn(
+    `offset-border relative row-span-4 flex flex-col justify-start gap-2
+    overflow-hidden rounded-xl bg-neutral-900 p-4 lg:last:col-start-3
+    lg:last:row-start-2`,
+    className,
+  )}
+  {...props}
+>
+  <div class="absolute top-2 right-2 z-10 flex items-center gap-2 text-xs">
+    {
+      tags.map((tag) => (
+        <Badge className="bg-sky-950 text-sky-400">{tag}</Badge>
+      ))
+    }
+  </div>
+  <div class="relative transition-[filter_color] duration-300">
+    <div
+      class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent
+        to-neutral-900 to-95%"
+    >
+    </div>
+    <Image
+      src={image}
+      alt={title}
+      class="aspect-[4/3] rounded-lg object-cover"
+    />
+  </div>
+
+  <div
+    class="absolute right-4 bottom-4 left-4 flex items-end justify-between
+      gap-4"
+  >
+    <div class="flex flex-col">
+      <h3 class="truncate text-lg font-bold">{title}</h3>
+      <p class="text-xs text-muted-foreground">{description}</p>
+    </div>
+    {
+      github || link ? (
+        <div class="flex items-center gap-2">
+          {link ? (
+            <a
+              href={link}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1 rounded bg-sky-950 px-2 py-1 text-xs text-sky-400 transition-colors hover:bg-sky-900"
+            >
+              <LinkSimpleIcon weight="duotone" size={20} />
+              Visit
+            </a>
+          ) : null}
+          {github ? (
+            <a
+              href={github}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center justify-center rounded bg-sky-950 p-2 text-sky-400 transition-colors hover:bg-sky-900"
+            >
+              <GithubLogoIcon weight="duotone" size={20} />
+              <span class="sr-only">Link to GitHub repository</span>
+            </a>
+          ) : null}
+        </div>
+      ) : null
+    }
+  </div>
+</div>

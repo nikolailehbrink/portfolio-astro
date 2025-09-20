@@ -1,65 +1,44 @@
 ---
+import ExperienceCard from "@/components/ExperienceCard.astro";
+import ProjectTeaser from "@/components/ProjectTeaser.astro";
 import RootLayout from "@/layouts/RootLayout.astro";
-import Footer from "../components/Footer.astro";
-import Header from "../components/Header.astro";
-import {
-  HorseIcon,
-  ArrowArcLeftIcon,
-  AcornIcon,
-  AddressBookIcon,
-} from "@phosphor-icons/react";
+import { getCollection } from "astro:content";
+import { SKILLS } from "@/data/skills";
+
+const [companies, projects] = await Promise.all([
+  getCollection("companies"),
+  getCollection("projects"),
+]);
 ---
 
 <RootLayout>
-  <Header />
-  <HorseIcon />
-  <ArrowArcLeftIcon />
-  <AcornIcon />
-  <AddressBookIcon />
-  <main>
-    <h1>🧑‍🚀 Hello, Astronaut!</h1>
-    <p>
-      Welcome to the official <a href="https://astro.build/">Astro</a> blog starter
-      template. This template serves as a lightweight, minimally-styled starting
-      point for anyone looking to build a personal website, blog, or portfolio with
-      Astro.
-    </p>
-    <p>
-      This template comes with a few integrations already configured in your
-      <code>astro.config.mjs</code> file. You can customize your setup with
-      <a href="https://astro.build/integrations">Astro Integrations</a> to add tools
-      like Tailwind, React, or Vue to your project.
-    </p>
-    <p>Here are a few ideas on how to get started with the template:</p>
-    <ul>
-      <li>Edit this page in <code>src/pages/index.astro</code></li>
-      <li>
-        Edit the site header items in <code>src/components/Header.astro</code>
-      </li>
-      <li>
-        Add your name to the footer in <code>src/components/Footer.astro</code>
-      </li>
-      <li>
-        Check out the included blog posts in <code>src/content/blog/</code>
-      </li>
-      <li>
-        Customize the blog post page layout in <code
-          >src/layouts/BlogPost.astro</code
-        >
-      </li>
-    </ul>
-    <p>
-      Have fun! If you get stuck, remember to
-      <a href="https://docs.astro.build/">read the docs</a>
-      or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-    </p>
-    <p>
-      Looking for a blog template with a bit more personality? Check out
-      <a href="https://github.com/Charca/astro-blog-template"
-        >astro-blog-template</a
-      >
-      by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-    </p>
-  </main>
-  <Footer />
+  {companies.map((company) => <ExperienceCard {...company.data} />)}
+  <div class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    {projects.map((project) => <ProjectTeaser {...project.data} />)}
+  </div>
+  <div class="mt-8">
+    <h2 class="text-lg font-bold">Skills</h2>
+    <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+      {
+        Object.entries(SKILLS).map(([category, skills]) => (
+          <div>
+            <h3 class="font-semibold">{category}</h3>
+            <ul class="mt-2">
+              {skills.map((skill) => (
+                <li class="flex items-center gap-2">
+                  <skill.logo class="h-5 w-5" aria-hidden="true" />
+                  <a
+                    href={skill.url}
+                    class="text-sm text-sky-400 hover:underline"
+                  >
+                    {skill.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
 </RootLayout>
