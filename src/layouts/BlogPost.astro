@@ -26,7 +26,7 @@ const authors = await getEntries(authorsReferences);
 <RootLayout>
   <BaseHead title={title} description={description} image={cover} slot="head" />
   <Header />
-  <main>
+  <main class="container mx-auto max-w-6xl">
     {
       authors && authors.length > 0 && (
         <div class="prose" style="text-align: center; margin-bottom: 2em;">
