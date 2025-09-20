@@ -14,8 +14,14 @@ import node from "@astrojs/node";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [mdx(), sitemap(), react()],
   site: "https://portfolio-astro-jet-delta.vercel.app/",
+  integrations: [
+    mdx(),
+    sitemap({
+      changefreq: "weekly",
+    }),
+    react(),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },
