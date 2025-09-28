@@ -22,7 +22,7 @@ const blog = defineCollection({
 });
 
 const authors = defineCollection({
-  loader: file("src/data/authors/authors.json"),
+  loader: file("src/data/authors.json"),
   schema: ({ image }) =>
     z.object({
       name: z.string(),
@@ -51,8 +51,8 @@ const authors = defineCollection({
     }),
 });
 
-const companies = defineCollection({
-  loader: file("src/data/companies.json"),
+const career = defineCollection({
+  loader: file("src/data/career.json"),
   schema: ({ image }) =>
     z
       .object({
@@ -79,4 +79,4 @@ const projects = defineCollection({
     }),
 });
 
-export const collections = { blog, authors, companies, projects };
+export const collections = { blog, authors, career, projects };
