@@ -2,7 +2,6 @@ export function formatDate(
   date: Date | string | number,
   options?: Intl.DateTimeFormatOptions,
 ) {
-  console.log(date);
   options ??= {
     year: "numeric",
     day: "2-digit",
