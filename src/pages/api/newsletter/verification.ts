@@ -2,18 +2,20 @@ import { verifySignedToken } from "@/lib/token";
 import { resend } from "@/lib/resend";
 import type { APIRoute } from "astro";
 
+export const prerender = false;
+
 export const GET: APIRoute = async ({ request, redirect }) => {
   const { searchParams } = new URL(request.url);
   const token = searchParams.get("token");
 
   if (!token) {
-    throw "No token provided";
+    throw new Error("No token provided");
   }
 
   const email = verifySignedToken(token);
 
   if (!email) {
-    throw "Wrong token";
+    throw new Error("Wrong token");
   }
 
   try {
@@ -34,11 +36,11 @@ export const GET: APIRoute = async ({ request, redirect }) => {
 
     if (error) {
       console.error("Error adding contact:", error);
-      throw "Error adding contact";
+      throw new Error("Error adding contact");
     }
   } catch (error) {
     console.error("Error verifying token:", error);
-    throw "Error verifying token";
+    throw new Error("Error verifying token");
   }
   return redirect("/newsletter/confirmation");
 };
