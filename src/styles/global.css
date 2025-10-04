@@ -165,7 +165,7 @@
   }
 
   /* Shiki Code-Blocks */
-  pre.shiki {
+  pre.astro-code {
     &.has-diff .line {
       span:first-child::before {
         @apply mr-3 inline-flex w-2 content-[""];
@@ -215,7 +215,7 @@
   }
 
   /* Shiki Inline-Code */
-  span.shiki {
+  span.astro-code {
     @apply bg-transparent!;
   }
 }

@@ -8,7 +8,28 @@ import react from "@astrojs/react";
 import vercel from "@astrojs/vercel";
 import node from "@astrojs/node";
 
+import {
+  transformerMetaHighlight,
+  transformerMetaWordHighlight,
+} from "@shikijs/transformers";
+import { transformerMetaDiff } from "./src/lib/shiki/transformerMetaDiff";
+import { transformerCodeBlock } from "./src/lib/shiki/transformerCodeBlock";
+
 export default defineConfig({
+  markdown: {
+    shikiConfig: {
+      themes: {
+        light: "github-light",
+        dark: "dark-plus",
+      },
+      transformers: [
+        transformerMetaHighlight(),
+        transformerMetaWordHighlight(),
+        transformerMetaDiff(),
+        transformerCodeBlock(),
+      ],
+    },
+  },
   site: "https://portfolio-astro-jet-delta.vercel.app/",
   integrations: [
     mdx(),
