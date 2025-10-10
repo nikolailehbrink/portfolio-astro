@@ -1,20 +1,30 @@
 ---
-import { Image } from "astro:assets";
-import { getCollection } from "astro:content";
 import BaseHead from "../../components/BaseHead.astro";
-import Footer from "../../components/Footer.astro";
-import FormattedDate from "../../components/FormattedDate.astro";
-import Header from "../../components/Header.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../../consts";
-import { isDraft } from "../../lib/utils.ts";
 import RootLayout from "@/layouts/RootLayout.astro";
+import { getBlogTags, getPosts } from "@/lib/posts";
+import NewsletterForm from "@/components/react/NewsletterForm";
+import PostTeaser from "@/components/PostTeaser.astro";
+import { track } from "@vercel/analytics/server";
+import { badgeVariants } from "@/components/react/ui/badge";
+import { cn } from "@/lib/utils";
 
-const posts = (await getCollection("blog"))
-  .filter((post) => !(isDraft(post.filePath) && import.meta.env.PROD))
-  .sort(
-    (a, b) =>
-      b.data.publicationDate.valueOf() - a.data.publicationDate.valueOf(),
-  );
+export const prerender = false;
+
+const { searchParams } = Astro.url;
+const tag = searchParams.get("tag");
+console.log(tag);
+
+const tags = await getBlogTags();
+const filteredTag = tags.find(({ slug }) => slug === tag);
+
+console.log(filteredTag);
+const posts = await getPosts({ tag: filteredTag?.name });
+
+if (filteredTag) {
+  await track("blog-tag-filtered", { tag: filteredTag.name });
+}
+const hasFilteredTag = filteredTag !== undefined;
 ---
 
 <RootLayout>
@@ -23,31 +33,79 @@ const posts = (await getCollection("blog"))
     description={SITE_DESCRIPTION}
     slot="head"
   />
-  <Header />
-  <main>
-    <section>
-      <ul>
+  <div class="flex flex-col gap-4 sm:items-center">
+    <h1 class="text-3xl font-bold sm:text-center sm:text-4xl">Blog</h1>
+    <p class="max-w-prose text-muted-foreground sm:text-center">
+      A collection of my thoughts, ideas, and experiences. I write about various
+      topics, including web development, technology, and personal topics.
+    </p>
+    <NewsletterForm client:load showText={false} className="max-w-2xl" />
+    <div
+      class="relative mt-4 grid max-w-xl overflow-hidden rounded-lg border
+        border-border bg-neutral-900 offset-border"
+    >
+      <div
+        class="absolute inset-y-0 right-0 w-2 rounded-e-lg bg-linear-to-r
+          from-transparent to-neutral-900"
+      >
+      </div>
+      <form class="flex snap-x snap-mandatory gap-2 overflow-x-auto p-2">
+        <a
+          href="/blog"
+          class={cn(
+            "cursor-pointer snap-end scroll-mr-2",
+            badgeVariants({
+              variant: hasFilteredTag ? "secondary" : "default",
+            }),
+          )}>All</a
+        >
         {
-          posts.map((post) => (
-            <li>
-              <a href={`/blog/${post.id}/`}>
-                {post.data.cover && (
-                  <Image
-                    width={720}
-                    height={360}
-                    src={post.data.cover}
-                    alt=""
-                  />
+          tags.map(({ name, slug }) => {
+            const isActive = filteredTag?.slug === slug;
+            return (
+              <button
+                {...(!isActive ? { name: "tag", value: slug } : {})}
+                class={cn(
+                  "cursor-pointer snap-end scroll-mr-2",
+                  badgeVariants({
+                    variant: isActive ? "default" : "secondary",
+                  }),
                 )}
-                <h4 class="title">{post.data.title}</h4>
-                <p class="date">
-                  <FormattedDate date={post.data.publicationDate} />
-                </p>
-              </a>
-            </li>
-          ))
+                type="submit"
+              >
+                {name}
+              </button>
+            );
+          })
         }
-      </ul>
-    </section>
-  </main>
+      </form>
+    </div>
+    <ul
+      class="mt-2 grid grid-cols-1 gap-4 rounded-md md:grid-cols-2 lg:max-w-5xl"
+    >
+      {
+        posts.length > 0 ? (
+          posts.map(({ isDraft, data, id, readingTime }, index) => (
+            <PostTeaser
+              class="animate-in slide-in-from-bottom-25 fade-in"
+              style={{
+                animationDuration: `${300 + index * 300}ms`,
+              }}
+              post={{
+                ...data,
+                isDraft,
+                slug: id,
+                readingTime,
+              }}
+            />
+          ))
+        ) : (
+          <p class="col-span-2 rounded-lg bg-neutral-900 p-4 py-3 text-center text-muted-foreground">
+            No posts were found {filteredTag ? `for ${filteredTag.name}.` : "."}{" "}
+            <br />
+          </p>
+        )
+      }
+    </ul>
+  </div>
 </RootLayout>
