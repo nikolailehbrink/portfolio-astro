@@ -1,0 +1,16 @@
+---
+import type { RemoteImageProps } from "astro:assets";
+import type { LocalImageProps } from "astro:assets";
+import { Image } from "astro:assets";
+
+type Props = LocalImageProps | RemoteImageProps;
+
+const props = Astro.props;
+---
+
+<figure>
+  <Image {...props} />
+  <figcaption class="flex justify-center text-center">
+    {props.alt}
+  </figcaption>
+</figure>

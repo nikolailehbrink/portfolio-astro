@@ -3,6 +3,7 @@ import { type CollectionEntry, render } from "astro:content";
 import BlogPost from "../../layouts/BlogPost.astro";
 import { estimateReadingTime } from "@/lib/readingTime";
 import { getPosts } from "@/lib/posts";
+import Image from "@/components/BlogImage.astro";
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -19,5 +20,5 @@ const { Content } = await render(post);
 ---
 
 <BlogPost readingTime={readingTime} {...post.data}>
-  <Content />
+  <Content components={{ img: Image }} />
 </BlogPost>
