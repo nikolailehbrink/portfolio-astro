@@ -12,7 +12,7 @@ import { KanbanIcon } from "@phosphor-icons/react/dist/ssr/Kanban";
 import { MailboxIcon } from "@phosphor-icons/react/dist/ssr/Mailbox";
 import { StudentIcon } from "@phosphor-icons/react/dist/ssr/Student";
 import { TextColumnsIcon } from "@phosphor-icons/react/dist/ssr/TextColumns";
-import { Button, buttonVariants } from "@/components/react/ui/button";
+import { buttonVariants } from "@/components/react/ui/button";
 import NewsletterForm from "@/components/react/NewsletterForm";
 import ContactForm from "@/components/react/ContactForm";
 import PostTeaser from "@/components/PostTeaser.astro";
@@ -141,8 +141,8 @@ const educationExperiences = career.filter(
           posts.length > 0 ? (
             <div class="relative">
               <ul class="flex flex-col gap-4">
-                {posts.map((post) => (
-                  <PostTeaser {...post.data} slug={post.id} />
+                {posts.map(({ data, id, readingTime }) => (
+                  <PostTeaser post={{ ...data, slug: id, readingTime }} />
                 ))}
               </ul>
               <div class="absolute -inset-x-[3px] -bottom-[3px] z-30 flex justify-center rounded-xl bg-linear-to-b from-transparent to-background pt-12 pb-4">
