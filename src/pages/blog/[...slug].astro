@@ -1,17 +1,15 @@
 ---
-import { type CollectionEntry, getCollection, render } from "astro:content";
+import { type CollectionEntry, render } from "astro:content";
 import BlogPost from "../../layouts/BlogPost.astro";
-import { isDraft } from "@/lib/utils";
 import { estimateReadingTime } from "@/lib/readingTime";
+import { getPosts } from "@/lib/posts";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog");
-  return posts
-    .filter((post) => !(isDraft(post.filePath) && import.meta.env.PROD))
-    .map((post) => ({
-      params: { slug: post.id },
-      props: post,
-    }));
+  const posts = await getPosts();
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: post,
+  }));
 }
 type Props = CollectionEntry<"blog">;
 
