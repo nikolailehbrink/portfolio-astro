@@ -8,9 +8,9 @@ const blog = defineCollection({
     pattern: "**/*.{md,mdx}",
     generateId({ entry }) {
       let slug = entry;
-      const inFolder = entry.lastIndexOf("/");
-      if (inFolder !== -1) {
-        slug = entry.substring(0, inFolder);
+      const lastFolderIndex = entry.lastIndexOf("/");
+      if (lastFolderIndex !== -1) {
+        slug = entry.substring(0, lastFolderIndex);
       }
       const extension = entry.substring(entry.lastIndexOf("."));
       return slug.replace(extension, "");
