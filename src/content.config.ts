@@ -3,7 +3,19 @@ import { file, glob } from "astro/loaders";
 
 const blog = defineCollection({
   // Load Markdown and MDX files in the `src/content/blog/` directory.
-  loader: glob({ base: "./src/content/blog", pattern: "**/*.{md,mdx}" }),
+  loader: glob({
+    base: "./src/content/blog",
+    pattern: "**/*.{md,mdx}",
+    generateId({ entry }) {
+      let slug = entry;
+      const inFolder = entry.lastIndexOf("/");
+      if (inFolder !== -1) {
+        slug = entry.substring(0, inFolder);
+      }
+      const extension = entry.substring(entry.lastIndexOf("."));
+      return slug.replace(extension, "");
+    },
+  }),
   // Type-check frontmatter using a schema
   schema: ({ image }) =>
     z.object({
