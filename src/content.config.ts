@@ -62,6 +62,7 @@ const career = defineCollection({
         endDate: z.coerce.date().optional(),
         logo: image(),
         website: z.string().url().optional(),
+        type: z.enum(["work", "education"]),
       })
       .strict(),
 });

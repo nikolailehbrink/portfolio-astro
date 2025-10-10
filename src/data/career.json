@@ -4,14 +4,16 @@
     "description": "Full Stack Engineer",
     "startDate": "2024-06-08",
     "logo": "../assets/career/vanever.svg",
-    "website": "https://vanever.com"
+    "website": "https://vanever.com",
+    "type": "work"
   },
   "freelance-work": {
     "title": "Freelance Work",
     "description": "Web Developer & Designer",
     "startDate": "2021-10-01",
     "logo": "../assets/career/freelance.svg",
-    "website": "https://nikolailehbr.ink"
+    "website": "https://nikolailehbr.ink",
+    "type": "work"
   },
   "moskito": {
     "title": "moskito",
@@ -19,7 +21,8 @@
     "startDate": "2022-01-01",
     "endDate": "2023-08-31",
     "logo": "../assets/career/moskito.svg",
-    "website": "https://moskito.de"
+    "website": "https://moskito.de",
+    "type": "work"
   },
   "jungundbillig": {
     "title": "Jung&Billig",
@@ -27,7 +30,8 @@
     "startDate": "2020-04-01",
     "endDate": "2021-05-01",
     "logo": "../assets/career/jungundbillig.svg",
-    "website": "https://jungundbillig.de"
+    "website": "https://jungundbillig.de",
+    "type": "work"
   },
   "cimdata": {
     "title": "Specialized Training in React",
@@ -35,7 +39,8 @@
     "startDate": "2023-11-01",
     "endDate": "2024-01-31",
     "logo": "../assets/career/cimdata.svg",
-    "website": "https://www.cimdata.de/"
+    "website": "https://www.cimdata.de/",
+    "type": "education"
   },
   "hsb": {
     "title": "B.Sc. Media Computer Science",
@@ -43,6 +48,7 @@
     "startDate": "2017-10-01",
     "endDate": "2021-07-31",
     "logo": "../assets/career/hsb.svg",
-    "website": "https://www.hs-bremen.de/studieren/studiengang/internationaler-studiengang-medieninformatik-b-sc/"
+    "website": "https://www.hs-bremen.de/studieren/studiengang/internationaler-studiengang-medieninformatik-b-sc/",
+    "type": "education"
   }
 }
