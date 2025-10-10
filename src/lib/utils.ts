@@ -5,10 +5,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function isDraft(path?: string) {
-  return path?.includes("/drafts/");
-}
-
 export function slugify(slug: string) {
   return slug.trim().toLowerCase().replaceAll(" ", "-");
 }

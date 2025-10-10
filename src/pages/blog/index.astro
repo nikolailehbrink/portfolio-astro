@@ -13,12 +13,10 @@ export const prerender = false;
 
 const { searchParams } = Astro.url;
 const tag = searchParams.get("tag");
-console.log(tag);
 
 const tags = await getBlogTags();
 const filteredTag = tags.find(({ slug }) => slug === tag);
 
-console.log(filteredTag);
 const posts = await getPosts({ tag: filteredTag?.name });
 
 if (filteredTag) {
@@ -85,7 +83,7 @@ const hasFilteredTag = filteredTag !== undefined;
     >
       {
         posts.length > 0 ? (
-          posts.map(({ isDraft, data, id, readingTime }, index) => (
+          posts.map(({ data, id, readingTime }, index) => (
             <PostTeaser
               class="animate-in slide-in-from-bottom-25 fade-in"
               style={{
@@ -93,7 +91,6 @@ const hasFilteredTag = filteredTag !== undefined;
               }}
               post={{
                 ...data,
-                isDraft,
                 slug: id,
                 readingTime,
               }}

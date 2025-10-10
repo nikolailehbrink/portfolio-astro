@@ -11,13 +11,12 @@ import { ClockCountdownIcon } from "@phosphor-icons/react/dist/ssr/ClockCountdow
 type Props = HTMLAttributes<"li"> & {
   post: CollectionEntry<"blog">["data"] & {
     readingTime: number;
-    isDraft?: boolean;
     slug: string;
   };
 };
 
 const {
-  post: { title, description, publicationDate, readingTime, isDraft, slug },
+  post: { title, description, publicationDate, readingTime, draft, slug },
   class: className,
   ...props
 } = Astro.props;
@@ -51,7 +50,7 @@ const formattedPublicationDate = formatDate(
   >
     <div class="flex gap-2 text-xs text-muted-foreground">
       {
-        isDraft && (
+        draft && (
           <Badge className="dark:bg-orange-500/20 dark:text-orange-400">
             <PencilIcon size={16} weight="duotone" />
             Draft

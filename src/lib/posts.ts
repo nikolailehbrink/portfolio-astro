@@ -1,5 +1,5 @@
 import { getCollection } from "astro:content";
-import { isDraft, slugify } from "./utils";
+import { slugify } from "./utils";
 import type { MarkdownHeading } from "astro";
 import { estimateReadingTime } from "./readingTime";
 
@@ -7,15 +7,14 @@ export async function getPosts(options?: {
   take?: number;
   tag?: string | null;
 }) {
-  let posts = (await getCollection("blog")).map((post) => ({
+  let posts = (
+    await getCollection("blog", ({ data }) =>
+      import.meta.env.PROD ? data.draft !== true : true,
+    )
+  ).map((post) => ({
     ...post,
-    isDraft: isDraft(post.id),
     readingTime: estimateReadingTime(post.body),
   }));
-
-  if (import.meta.env.PROD) {
-    posts = posts.filter(({ isDraft }) => !isDraft);
-  }
 
   const { tag, take } = options || {};
 
