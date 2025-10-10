@@ -23,8 +23,8 @@ const {
 
 <div
   class={cn(
-    `offset-border relative row-span-4 flex flex-col justify-start gap-2
-    overflow-hidden rounded-xl bg-neutral-900 p-4 lg:last:col-start-3
+    `relative row-span-4 flex flex-col justify-start gap-2 overflow-hidden
+    rounded-xl bg-neutral-900 p-4 offset-border lg:last:col-start-3
     lg:last:row-start-2`,
     className,
   )}
@@ -46,6 +46,7 @@ const {
     <Image
       src={image}
       alt={title}
+      loading="eager"
       class="aspect-[4/3] rounded-lg object-cover"
     />
   </div>
