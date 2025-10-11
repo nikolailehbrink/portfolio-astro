@@ -5,6 +5,7 @@ import { estimateReadingTime } from "@/lib/readingTime";
 import { generateToc, getPosts } from "@/lib/posts";
 import BlogImage from "@/components/BlogImage.astro";
 import BlogLink from "@/components/BlogLink.astro";
+import CodeBlock from "@/components/CodeBlock.astro";
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -26,5 +27,6 @@ const tableOfContents = generateToc(headings);
   tableOfContents={tableOfContents}
   {...post.data}
 >
-  <Content components={{ img: BlogImage, a: BlogLink }} />
+  <!-- TODO: Prevent empty paragraphs from being created for img  -->
+  <Content components={{ img: BlogImage, a: BlogLink, pre: CodeBlock }} />
 </BlogPost>
