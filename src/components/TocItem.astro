@@ -12,7 +12,7 @@ const { text, slug, children } = Astro.props;
     children && children.length > 0 && (
       <ol>
         {children.map((entry) => (
-          <TocItem {...entry} />
+          <Astro.self {...entry} />
         ))}
       </ol>
     )
