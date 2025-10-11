@@ -9,7 +9,5 @@ const isExternalLink = href?.toString().startsWith("http");
 <a
   href={href}
   target={isExternalLink ? "_blank" : "_self"}
-  rel={isExternalLink ? "noreferrer" : "noopener"}
+  rel={isExternalLink ? "noreferrer" : "noopener"}><slot /></a
 >
-  <slot />
-</a>

@@ -3,6 +3,7 @@ import { GithubLogoIcon } from "@phosphor-icons/react/dist/ssr/GithubLogo";
 import { LinkedinLogoIcon } from "@phosphor-icons/react/dist/ssr/LinkedinLogo";
 import { XLogoIcon } from "@phosphor-icons/react/dist/ssr/XLogo";
 import { YoutubeLogoIcon } from "@phosphor-icons/react/dist/ssr/YoutubeLogo";
+import type { HTMLAttributes } from "astro/types";
 
 const SOCIAL_MEDIA_PLATFORMS = {
   GitHub: {
@@ -23,15 +24,17 @@ const SOCIAL_MEDIA_PLATFORMS = {
   },
 } as const;
 
-type Props = {
+type Props = HTMLAttributes<"a"> & {
   platform: keyof typeof SOCIAL_MEDIA_PLATFORMS;
   handle: string;
 };
-const { handle, platform } = Astro.props;
+
+const { handle, platform, ...props } = Astro.props;
 const { profileUrl, logo: Logo } = SOCIAL_MEDIA_PLATFORMS[platform];
 ---
 
 <a
+  {...props}
   href={`${profileUrl}/${handle}`}
   target="_blank"
   class="inline-flex items-center gap-1 rounded-md border border-neutral-800
