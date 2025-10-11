@@ -1,5 +1,6 @@
 import { defineCollection, reference, z } from "astro:content";
 import { file, glob } from "astro/loaders";
+import { slugify } from "./lib/utils";
 
 const blog = defineCollection({
   // Load Markdown and MDX files in the `src/content/blog/` directory.
@@ -7,6 +8,7 @@ const blog = defineCollection({
     base: "./src/content/blog",
     pattern: "**/*.{md,mdx}",
     generateId({ entry }) {
+      // TODO: This function needs enhancement and tests. Having two articles in one folder without a "_" results in unexpected id generation etc.
       let slug = entry;
       const lastFolderIndex = entry.lastIndexOf("/");
       if (lastFolderIndex !== -1) {
@@ -16,7 +18,7 @@ const blog = defineCollection({
         }
       }
       const extension = entry.substring(entry.lastIndexOf("."));
-      return slug.replace(extension, "");
+      return slugify(slug.replace(extension, ""));
     },
   }),
   // Type-check frontmatter using a schema

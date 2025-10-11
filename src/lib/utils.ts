@@ -5,6 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+// TODO: Needs enhancement and tests
 export function slugify(slug: string) {
   return slug.trim().toLowerCase().replaceAll(" ", "-");
 }
