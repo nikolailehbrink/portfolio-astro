@@ -11,6 +11,9 @@ const blog = defineCollection({
       const lastFolderIndex = entry.lastIndexOf("/");
       if (lastFolderIndex !== -1) {
         slug = entry.substring(0, lastFolderIndex);
+        if (slug.includes("_")) {
+          slug = entry.substring(lastFolderIndex + 1);
+        }
       }
       const extension = entry.substring(entry.lastIndexOf("."));
       return slug.replace(extension, "");
