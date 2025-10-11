@@ -1,13 +1,13 @@
 ---
-  title: "Sending thousands of Emails with Deno and Postmark"
-  publicationDate: "Jun 19 2024"
-  description:
-    "Learn how we efficiently send over 37k notification emails with detailed logging and error handling."
-  tags: ["Deno", "Postmark", "Email", "TypeScript"]
+title: "Sending thousands of Emails with Deno and Postmark"
+description: "Learn how we efficiently send over 37k notification emails with detailed logging and error handling."
+publicationDate: "2025-06-06"
+tags: ["Deno", "Postmark", "Email", "TypeScript"]
 ---
 
-import { Image } from 'astro:assets';
-
+import ProfileBadge from "@/components/ProfileBadge.astro";
+import Alert from "@/components/Alert.astro";
+import NewsletterForm from "@/components/react/NewsletterForm";
 
 Recently, we needed to send over 37k emails to our users. This task required a reliable, efficient solution that
 could handle batch processing while maintaining detailed logs for
@@ -19,7 +19,7 @@ In this article, I'll walk through our implementation, highlighting Deno's uniqu
 
 ## Why Deno?
 
-Deno is a modern runtime for JavaScript and TypeScript created by, the original creator of Node.js. At the end of last year, I watched their [Deno 2 Announcement Video](https://www.youtube.com/watch?v=d35SlRgVxT8) and really wanted to try it out. I saw this as the perfect opportunity.
+Deno is a modern runtime for JavaScript and TypeScript created by <ProfileBadge platform="GitHub" handle="ry">Ryan Dahl</ProfileBadge>, the original creator of Node.js. At the end of last year, I watched their [Deno 2 Announcement Video](https://www.youtube.com/watch?v=d35SlRgVxT8) and really wanted to try it out. I saw this as the perfect opportunity.
 
 Here is what makes Deno great:
 
@@ -108,11 +108,13 @@ while (users.length > 0) {
 
 Now, let's break down the key components and Deno-specific features.
 
+<NewsletterForm />
+
 ## Deno Features Showcase
 
 ### Native TypeScript Support
 
-One of Deno's standout features is its native TypeScript support. Unlike Node.js, which requires additional setup with tools like  or, Deno runs TypeScript files directly. This allowed us to write our script in TypeScript without any configuration or build steps.
+One of Deno's standout features is its native TypeScript support. Unlike Node.js, which requires additional setup with tools like <ProfileBadge handle="TypeStrong/ts-node" platform="GitHub">ts-node</ProfileBadge> or <ProfileBadge handle="privatenumber/tsx" platform="GitHub">tsx</ProfileBadge>, Deno runs TypeScript files directly. This allowed us to write our script in TypeScript without any configuration or build steps.
 
 ### Environment Variables with `Deno.env.get`
 
@@ -126,6 +128,11 @@ if (SERVER_API_TOKEN === undefined) {
 }
 ```
 
+<Alert type="info">
+  The `get(){:ts}` method returns `undefined{:ts}` if the variable doesn't exist, allowing
+  for clear error handling. We used this to ensure our Postmark API token was
+  properly configured before attempting to send any emails.
+</Alert>
 
 ### Native JSON Imports
 
@@ -182,11 +189,16 @@ The `Deno.readFileSync(){:ts}` function returns a `Uint8Array{:js}`, which we co
 
 ### The Postmark Node.js Library
 
-We imported the using Deno's npm compatibility:
+We imported the <ProfileBadge platform="GitHub" handle={"ActiveCampaign/postmark.js"}>Postmark Node.js Library</ProfileBadge> using Deno's npm compatibility:
 
 ```typescript showLineNumbers
 import postmark from "npm:postmark";
 ```
+
+<Alert type="tip">
+  The <code>npm:</code> prefix is a Deno feature that allows [importing npm
+  packages](https://docs.deno.com/runtime/fundamentals/node/) directly without a `package.json` file or `npm install{:shell}` step. The package is downloaded and cached on first use.
+</Alert>
 
 ### Batch Email Sending
 
