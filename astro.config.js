@@ -9,23 +9,18 @@ import vercel from "@astrojs/vercel";
 import node from "@astrojs/node";
 
 import {
+  transformerMetaDiff,
   transformerMetaHighlight,
-  transformerMetaWordHighlight,
-} from "@shikijs/transformers";
-import { transformerMetaDiff } from "./src/lib/shiki/transformerMetaDiff";
+} from "./src/lib/shiki/transformerMeta";
 import { transformerCodeBlock } from "./src/lib/shiki/transformerCodeBlock";
 
 export default defineConfig({
   markdown: {
     shikiConfig: {
-      themes: {
-        light: "github-light",
-        dark: "dark-plus",
-      },
+      theme: "dark-plus",
       transformers: [
-        transformerMetaHighlight(),
-        transformerMetaWordHighlight(),
         transformerMetaDiff(),
+        transformerMetaHighlight(),
         transformerCodeBlock(),
       ],
     },

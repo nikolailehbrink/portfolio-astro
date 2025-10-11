@@ -62,10 +62,13 @@ export function transformerCodeBlock(): ShikiTransformer {
       if (!showLineNumbers) {
         return;
       }
+
       this.addClassToHast(hast, "show-line-numbers");
+
       const startingNumberMatch = this.options.meta?.__raw?.match(
         /showLineNumbers=(\d+)/,
       );
+
       const startingNumber =
         startingNumberMatch && parseInt(startingNumberMatch[1], 10);
 

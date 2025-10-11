@@ -1,9 +1,10 @@
 import type { ShikiTransformer } from "shiki";
 
 const CLASSES = {
-  lineAdd: "diff add",
-  lineRemove: "diff remove",
+  add: "diff add",
+  remove: "diff remove",
   hasDiff: "has-diff",
+  highlight: "highlight",
 };
 
 /**
@@ -71,40 +72,33 @@ interface TransformerMetaLineDiffOptions {
  * // Code here
  * ```
  */
-export function transformerMetaDiff(
+function transformerMetaDiff(
   options: TransformerMetaLineDiffOptions = {},
 ): ShikiTransformer {
   const {
-    addClassName = CLASSES.lineAdd,
-    removeClassName = CLASSES.lineRemove,
+    addClassName = CLASSES.add,
+    removeClassName = CLASSES.remove,
     hasDiffClassName = CLASSES.hasDiff,
   } = options;
 
   return {
     name: "transformerMetaDiff",
     code(node) {
-      // Extract add and remove parameters from meta
-      const meta = this.options.meta?.__raw || "";
+      const meta = this.options.meta?.__raw;
+      if (!meta) return;
 
-      // Parse add and remove parameters using regex
-      // Match until a space or end of string
       const addMatch = meta.match(/add=\{(\S+)\}/);
       const removeMatch = meta.match(/remove=\{(\S+)\}/);
 
-      // If neither parameter is present, do nothing
       if (!addMatch && !removeMatch) return;
 
-      // Add the diff class to the pre element
       this.addClassToHast(this.pre, hasDiffClassName);
 
-      // Parse line numbers
       const addLines = addMatch ? parseLineNumbers(addMatch[1]) : [];
       const removeLines = removeMatch ? parseLineNumbers(removeMatch[1]) : [];
 
-      // Get all line elements
       const lines = node.children.filter((node) => node.type === "element");
 
-      // Apply classes to lines
       lines.forEach((line, index) => {
         // Line numbers are 1-indexed in the parameters
         const lineNumber = index + 1;
@@ -120,3 +114,55 @@ export function transformerMetaDiff(
     },
   };
 }
+
+interface TransformerMetaHighlightOptions {
+  /**
+   * Class for highlighted lines
+   * @default 'highlighted'
+   */
+  highlightClassName?: string;
+}
+
+/**
+ * Allow using `highlight={1,3,4-5}` in the code snippet meta to mark highlighted lines.
+ *
+ * Example:
+ * ```js highlight={1,3,4-5}
+ * // Code here
+ * ```
+ *
+ * You can also use multiple highlight ranges:
+ * ```js highlight={1-3,5,7-9}
+ * // Code here
+ * ```
+ */
+function transformerMetaHighlight(
+  options: TransformerMetaHighlightOptions = {},
+): ShikiTransformer {
+  const { highlightClassName = CLASSES.highlight } = options;
+
+  return {
+    name: "transformerMetaHighlight",
+    code(node) {
+      const meta = this.options.meta?.__raw;
+      if (!meta) return;
+
+      const highlightMatch = meta.match(/highlight=\{([^}]+)\}/);
+      if (!highlightMatch) return;
+
+      const highlightLines = parseLineNumbers(highlightMatch[1]);
+      const lines = node.children.filter((node) => node.type === "element");
+
+      lines.forEach((line, index) => {
+        // Line numbers are 1-indexed in the parameters
+        const lineNumber = index + 1;
+
+        if (highlightLines.includes(lineNumber)) {
+          this.addClassToHast(line, highlightClassName);
+        }
+      });
+    },
+  };
+}
+
+export { transformerMetaDiff, transformerMetaHighlight };

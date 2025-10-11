@@ -46,7 +46,6 @@
   },
   "devDependencies": {
     "@react-email/preview-server": "4.2.12",
-    "@shikijs/transformers": "^3.13.0",
     "prettier": "^3.6.2",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-classnames": "^0.8.2",
