@@ -1,6 +1,6 @@
 ---
-import { LEGAL_SITES } from "@/data/legalSites";
 import { SOCIAL_MEDIA_PROFILES } from "@/data/socialProfiles";
+import LEGAL_PAGES from "@/data/legal-pages.json";
 import { cn } from "@/lib/utils";
 import { track } from "@vercel/analytics";
 import type { HTMLAttributes } from "astro/types";
@@ -49,8 +49,8 @@ const currentYear = new Date().getFullYear();
     <nav class="flex grow justify-end">
       <menu class="flex gap-2">
         {
-          LEGAL_SITES.map(({ href: link, name }) => (
-            <a href={link} class="text-muted-foreground hover:text-foreground">
+          LEGAL_PAGES.map(({ href, name }) => (
+            <a href={href} class="text-muted-foreground hover:text-foreground">
               {name}
             </a>
           ))
