@@ -1,9 +1,10 @@
 ---
-import { SOCIAL_MEDIA_PROFILES } from "@/data/socialProfiles";
 import LEGAL_PAGES from "@/data/legal-pages.json";
+import { SOCIAL_LINKS } from "@/data/social-links";
 import { cn } from "@/lib/utils";
 import { track } from "@vercel/analytics";
 import type { HTMLAttributes } from "astro/types";
+
 type Props = HTMLAttributes<"footer">;
 
 const { class: className, ...props } = Astro.props;
@@ -31,7 +32,7 @@ const currentYear = new Date().getFullYear();
     >
       <menu class="flex gap-2">
         {
-          SOCIAL_MEDIA_PROFILES.map(({ href, name, logo: Logo }) => (
+          SOCIAL_LINKS.map(({ href, name, logo: Logo }) => (
             <a
               href={href}
               target="_blank"

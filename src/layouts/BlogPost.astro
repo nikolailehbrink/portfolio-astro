@@ -10,7 +10,7 @@ import { formatDate } from "@/lib/format";
 import { cn, slugify } from "@/lib/utils";
 import LinkedHeading from "@/components/LinkedHeading.astro";
 import Avatar from "@/components/Avatar.astro";
-import { SOCIAL_MEDIA_PROFILES } from "@/data/socialProfiles";
+import { SOCIAL_LINKS } from "@/data/social-links";
 import { Badge, badgeVariants } from "@/components/react/ui/badge";
 import { PencilIcon } from "@phosphor-icons/react/dist/ssr/Pencil";
 import TableOfContents from "@/components/TableOfContents.astro";
@@ -61,7 +61,7 @@ const formattedModificationDate = modificationDate
             <p>Nikolai Lehbrink</p>
             <div class="flex items-center gap-2">
               {
-                SOCIAL_MEDIA_PROFILES.map(({ href, logo: Logo, name }) => {
+                SOCIAL_LINKS.map(({ href, logo: Logo, name }) => {
                   return (
                     <a
                       href={href}

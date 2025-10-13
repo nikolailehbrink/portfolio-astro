@@ -10,7 +10,7 @@ type SocialProfile = {
   logo: Icon;
 };
 
-export const SOCIAL_MEDIA_PROFILES = [
+export const SOCIAL_LINKS = [
   {
     name: "GitHub",
     href: "https://github.com/nikolailehbrink",
