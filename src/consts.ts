@@ -8,3 +8,5 @@ export const AI_CHAT_MESSAGE_LIMIT = import.meta.env.PROD ? 10 : 2;
 export const SECONDS_TO_CHAT_AGAIN = import.meta.env.PROD
   ? 1000 * 60 * 60 * 24 // 24 hours
   : 1000 * 60; // 1 minute
+
+export const locale = "en-US";

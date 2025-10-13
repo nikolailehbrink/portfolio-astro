@@ -1,3 +1,5 @@
+import { locale } from "@/consts";
+
 export function formatDate(
   date: Date | string | number,
   options?: Intl.DateTimeFormatOptions,
@@ -18,5 +20,3 @@ export function formatDate(
 
   return new Intl.DateTimeFormat(locale, options).format(date);
 }
-
-const locale = "en-US";
