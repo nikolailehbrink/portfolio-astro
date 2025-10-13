@@ -35,6 +35,7 @@ const {
   tableOfContents,
 } = Astro.props;
 const authors = await getEntries(authorsReferences);
+const { pathname } = Astro.url;
 
 const formattedPublicationDate = formatDate(publicationDate);
 const formattedModificationDate = modificationDate
@@ -155,13 +156,13 @@ const formattedModificationDate = modificationDate
           prose-a:decoration-sky-500 prose-a:underline-offset-4"
       >
         {
-          formattedModificationDate ? (
+          modificationDate ? (
             <time
               class={cn(
                 badgeVariants({ variant: "secondary" }),
                 "bg-sky-500/20 text-sky-400",
               )}
-              datetime={modificationDate?.toISOString()}
+              datetime={modificationDate.toISOString()}
             >
               Last updated: {formattedModificationDate}
             </time>
