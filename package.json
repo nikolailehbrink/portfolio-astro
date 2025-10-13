@@ -13,6 +13,7 @@
   "dependencies": {
     "@ai-sdk/openai": "^2.0.24",
     "@ai-sdk/react": "^2.0.34",
+    "@astrojs/db": "^0.18.0",
     "@astrojs/mdx": "^4.3.6",
     "@astrojs/node": "^9.4.4",
     "@astrojs/react": "^4.4.0",

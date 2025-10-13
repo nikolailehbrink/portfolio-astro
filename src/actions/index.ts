@@ -7,6 +7,8 @@ import { defineAction } from "astro:actions";
 import NewsletterVerificationEmail, {
   PlainText,
 } from "@/components/react/emails/newsletter-verification";
+import { z } from "astro:schema";
+import { db, eq, sql, ViewCount } from "astro:db";
 
 export const server = {
   newsletter: defineAction({
@@ -189,4 +191,47 @@ export const server = {
       };
     },
   }),
+  pageViews: {
+    increment: defineAction({
+      input: z.object({
+        pathname: z.string(),
+      }),
+      async handler(input) {
+        const { pathname } = input;
+
+        const updatedViewCount = await db
+          .insert(ViewCount)
+          .values({
+            pathname,
+          })
+          .onConflictDoUpdate({
+            target: ViewCount.pathname,
+            set: {
+              views: sql`views + 1`,
+            },
+          })
+          .returning();
+        return updatedViewCount[0].views;
+      },
+    }),
+    get: defineAction({
+      input: z.object({
+        pathname: z.string(),
+      }),
+      async handler(input) {
+        const { pathname } = input;
+        const viewCount = await db
+          .select()
+          .from(ViewCount)
+          .where(eq(ViewCount.pathname, pathname));
+        return viewCount[0]?.views ?? 0;
+      },
+    }),
+    getAll: defineAction({
+      async handler() {
+        const views = await db.select().from(ViewCount);
+        return views.reduce((acc, current) => acc + current.views, 0);
+      },
+    }),
+  },
 };

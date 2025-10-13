@@ -14,6 +14,8 @@ import {
 } from "./src/lib/shiki/transformerMeta";
 import { transformerCodeBlock } from "./src/lib/shiki/transformerCodeBlock";
 
+import db from "@astrojs/db";
+
 export default defineConfig({
   markdown: {
     shikiConfig: {
@@ -26,13 +28,9 @@ export default defineConfig({
     },
   },
   site: "https://portfolio-astro-jet-delta.vercel.app/",
-  integrations: [
-    mdx(),
-    sitemap({
-      changefreq: "weekly",
-    }),
-    react(),
-  ],
+  integrations: [mdx(), sitemap({
+    changefreq: "weekly",
+  }), react(), db()],
   vite: {
     plugins: [tailwindcss()],
   },

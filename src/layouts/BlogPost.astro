@@ -14,6 +14,8 @@ import { SOCIAL_MEDIA_PROFILES } from "@/data/socialProfiles";
 import { Badge, badgeVariants } from "@/components/react/ui/badge";
 import { PencilIcon } from "@phosphor-icons/react/dist/ssr/Pencil";
 import TableOfContents from "@/components/TableOfContents.astro";
+import ViewCount from "@/components/ViewCount.astro";
+import Skeleton from "@/components/Skeleton.astro";
 
 type Props = CollectionEntry<"blog">["data"] & {
   readingTime: ReadingTime;
@@ -98,6 +100,10 @@ const formattedModificationDate = modificationDate
             </Badge>
           ) : null
         }
+        <span>•</span>
+        <ViewCount server:defer pathname={pathname} usePost={" ".repeat(2048)}>
+          <Skeleton slot="fallback" class="h-5 w-8" />
+        </ViewCount>
       </div>
       <p class="text-muted-foreground">
         {description}
