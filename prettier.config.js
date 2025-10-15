@@ -1,4 +1,4 @@
-const functions = ["cn", "clsx", "cva", "tw"];
+const functions = ["cn", "clsx", "cva", "tw", "autolinkHeadings"];
 
 /** @type {import('prettier').Config & import('prettier-plugin-tailwindcss').PluginOptions} */
 export default {
