@@ -1,5 +1,4 @@
 import type { Icon } from "@phosphor-icons/react";
-import { DribbbleLogoIcon } from "@phosphor-icons/react/dist/ssr/DribbbleLogo";
 import { GithubLogoIcon } from "@phosphor-icons/react/dist/ssr/GithubLogo";
 import { LinkedinLogoIcon } from "@phosphor-icons/react/dist/ssr/LinkedinLogo";
 import { XLogoIcon } from "@phosphor-icons/react/dist/ssr/XLogo";
@@ -25,10 +24,5 @@ export const SOCIAL_LINKS = [
     name: "X",
     href: "https://x.com/nikolailehbrink",
     logo: XLogoIcon,
-  },
-  {
-    name: "Dribbble",
-    href: "https://dribbble.com/nikolailehbrink",
-    logo: DribbbleLogoIcon,
   },
 ] as const satisfies SocialProfile[];
