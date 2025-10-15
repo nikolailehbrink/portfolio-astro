@@ -22,7 +22,7 @@ const currentYear = new Date().getFullYear();
     class="relative container flex flex-wrap items-center justify-between gap-3
       max-sm:flex-col"
   >
-    <p class="grow max-sm:order-2">
+    <p class="flex-1 max-sm:order-2">
       <span class="text-muted-foreground"> Copyright © {currentYear} </span>
       <span class="text-muted-foreground"> - </span>
       Nikolai Lehbrink
@@ -47,7 +47,7 @@ const currentYear = new Date().getFullYear();
         }
       </menu>
     </nav>
-    <nav class="flex grow justify-end">
+    <nav class="flex flex-1 justify-end">
       <menu class="flex gap-2">
         {
           LEGAL_PAGES.map(({ href, name }) => (
