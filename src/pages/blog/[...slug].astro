@@ -19,7 +19,12 @@ type Props = CollectionEntry<"blog">;
 const post = Astro.props;
 const readingTime = estimateReadingTime(post.body);
 const { Content, headings } = await render(post);
-const tableOfContents = generateToc(headings);
+const updatedHeadings = headings.map((heading) =>
+  heading.text.startsWith("#")
+    ? { ...heading, text: heading.text.substring(1) }
+    : heading,
+);
+const tableOfContents = generateToc(updatedHeadings);
 ---
 
 <BlogPost
