@@ -1,12 +1,17 @@
 // @ts-check
 
 import mdx from "@astrojs/mdx";
-import sitemap from "@astrojs/sitemap";
-import { defineConfig } from "astro/config";
-import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
 import vercel from "@astrojs/vercel";
 import node from "@astrojs/node";
+import db from "@astrojs/db";
+import sitemap from "@astrojs/sitemap";
+import { defineConfig } from "astro/config";
+import tailwindcss from "@tailwindcss/vite";
+
+// https://docs.astro.build/en/guides/markdown-content/#heading-ids-and-plugins
+import { rehypeHeadingIds } from "@astrojs/markdown-remark";
+import autolinkHeadings from "rehype-autolink-headings";
 
 import {
   transformerMetaDiff,
@@ -14,10 +19,9 @@ import {
 } from "./src/lib/shiki/transformerMeta";
 import { transformerCodeBlock } from "./src/lib/shiki/transformerCodeBlock";
 
-import db from "@astrojs/db";
-
 export default defineConfig({
   markdown: {
+    rehypePlugins: [autolinkHeadings],
     shikiConfig: {
       theme: "dark-plus",
       transformers: [
@@ -28,9 +32,36 @@ export default defineConfig({
     },
   },
   site: "https://portfolio-astro-jet-delta.vercel.app/",
-  integrations: [mdx(), sitemap({
-    changefreq: "weekly",
-  }), react(), db()],
+  integrations: [
+    mdx({
+      rehypePlugins: [
+        rehypeHeadingIds,
+        () =>
+          autolinkHeadings({
+            behavior: "prepend",
+            content: {
+              type: "text",
+              value: "#",
+            },
+            properties: {
+              class: `not-prose px-1 transition-opacity select-none
+              group-target:opacity-100 focus:opacity-100 max-sm:hidden
+              sm:absolute sm:-translate-x-full sm:opacity-0
+              sm:group-hover:opacity-100`,
+            },
+            headingProperties: { class: "group relative text-balance" },
+          }),
+      ],
+      optimize: {
+        ignoreElementNames: ["h1", "pre", "img"],
+      },
+    }),
+    sitemap({
+      changefreq: "weekly",
+    }),
+    react(),
+    db(),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },

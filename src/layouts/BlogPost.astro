@@ -8,7 +8,6 @@ import type { ReadingTime } from "@/lib/readingTime";
 import type { TocEntry } from "@/lib/posts";
 import { formatDate } from "@/lib/format";
 import { cn, slugify } from "@/lib/utils";
-import LinkedHeading from "@/components/LinkedHeading.astro";
 import Avatar from "@/components/Avatar.astro";
 import { SOCIAL_LINKS } from "@/data/social-links";
 import { Badge, badgeVariants } from "@/components/react/ui/badge";
@@ -52,9 +51,9 @@ const formattedModificationDate = modificationDate
         cover !== undefined ? "sm:text-center" : "",
       )}
     >
-      <LinkedHeading class="leading-tight" level={1}>
+      <h1 class="leading-tight">
         {title}
-      </LinkedHeading>
+      </h1>
       <div class="not-prose inline-flex flex-wrap items-center gap-2">
         <div class="inline-flex items-center gap-2 text-sm">
           <Avatar class="size-10 rounded-full" />
