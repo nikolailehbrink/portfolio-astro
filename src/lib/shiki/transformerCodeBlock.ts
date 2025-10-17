@@ -4,7 +4,6 @@ import type { ShikiTransformer } from "shiki";
  * A Shiki transformer that processes metadata for code blocks including:
  * - Filename display
  * - Copy button visibility
- * - Line numbers display
  *
  * Usage examples:
  * ````
@@ -14,7 +13,7 @@ import type { ShikiTransformer } from "shiki";
  * ````
  *
  * ````
- * ```js noCopy showLineNumbers
+ * ```js noCopy
  * console.log('Hello world')
  * ```
  * ````
@@ -52,30 +51,6 @@ export function transformerCodeBlock(): ShikiTransformer {
         ...this.options.meta,
         ...metaData,
       };
-    },
-    pre(hast) {
-      // Handle line numbers display, has to be done in the pre step,
-      // because preprocess only returns the code and not the hast
-      const showLineNumbers =
-        this.options.meta?.__raw?.includes("showLineNumbers");
-
-      if (!showLineNumbers) {
-        return;
-      }
-
-      this.addClassToHast(hast, "show-line-numbers");
-
-      const startingNumberMatch = this.options.meta?.__raw?.match(
-        /showLineNumbers=(\d+)/,
-      );
-
-      const startingNumber =
-        startingNumberMatch && parseInt(startingNumberMatch[1], 10);
-
-      if (startingNumber) {
-        hast.properties.style = `--starting-line-number: ${startingNumber};`;
-      }
-      return;
     },
   };
 }

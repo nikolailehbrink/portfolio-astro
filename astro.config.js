@@ -18,6 +18,7 @@ import {
   transformerMetaHighlight,
 } from "./src/lib/shiki/transformerMeta";
 import { transformerCodeBlock } from "./src/lib/shiki/transformerCodeBlock";
+import { transformerLineNumbers } from "./src/lib/shiki/transformerLineNumbers";
 
 export default defineConfig({
   markdown: {
@@ -44,6 +45,7 @@ export default defineConfig({
     shikiConfig: {
       theme: "dark-plus",
       transformers: [
+        transformerLineNumbers(),
         transformerMetaDiff(),
         transformerMetaHighlight(),
         transformerCodeBlock(),
