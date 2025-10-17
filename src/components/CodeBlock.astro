@@ -62,14 +62,15 @@ const LanguageIcon = language
   <div class="relative">
     <pre
       class={cn(
-        props.class,
-        `not-prose relative grid overflow-x-auto rounded-xl border
-        border-neutral-800 bg-neutral-900! px-4 py-3 text-sm`,
-        { "mt-0 rounded-t-none": filename },
+        "not-prose",
+        {
+          "mt-0 rounded-t-none": filename,
+        },
+        className,
       )}
       {...props}>
-          <slot />
-        </pre>
+      <slot />
+    </pre>
     {code && !noCopy ? <CopyToClipBoardButton client:load code={code} /> : null}
   </div>
 </figure>
