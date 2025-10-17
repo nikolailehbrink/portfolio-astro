@@ -70,7 +70,7 @@ Let's examine what each part of this code does:
 
 #### Environment-Based Access Control
 
-```typescript showLineNumbers=5
+```typescript showLineNumbers=6
 const isProductionDeployment = process.env.VERCEL_ENV === "production";
 ```
 
@@ -82,7 +82,7 @@ I am using Vercel as my hosting service and here as an example, but you can adap
 
 #### Dynamic Allow/Disallow Rules
 
-```typescript showLineNumbers=11
+```typescript showLineNumbers=12
 [isProductionDeployment ? "allow" : "disallow"]: ["/"],
 ```
 
@@ -98,7 +98,7 @@ This pattern uses computed property names to either:
 
 #### Production-Specific Rules
 
-```typescript showLineNumbers=12
+```typescript showLineNumbers=13
 ...(isProductionDeployment
   ? {
       disallow: ["/api/"],

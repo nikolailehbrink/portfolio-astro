@@ -120,7 +120,7 @@ One of Deno's standout features is its native TypeScript support. Unlike Node.js
 
 Deno provides a clean API for accessing environment variables:
 
-```typescript showLineNumbers=3
+```typescript showLineNumbers=4
 const SERVER_API_TOKEN = Deno.env.get("POSTMARK_SERVER_API_TOKEN");
 
 if (SERVER_API_TOKEN === undefined) {
@@ -138,7 +138,7 @@ if (SERVER_API_TOKEN === undefined) {
 
 Deno supports importing JSON files directly with the `with { type: "json" }{:js}` syntax:
 
-```typescript showLineNumbers=1
+```typescript showLineNumbers=2
 import users from "./users.json" with { type: "json" };
 ```
 
@@ -150,7 +150,7 @@ As a result our user data was loaded directly as an object.
 
 Deno provides straightforward [APIs for file operations](https://docs.deno.com/api/deno/file-system). We used these to implement a robust logging system:
 
-```typescript showLineNumbers=45
+```typescript showLineNumbers=46
 await Deno.writeTextFile(
   "logs.txt",
   responses.map((response) => JSON.stringify(response)).join("\n") + "\n",
@@ -171,7 +171,7 @@ This dual logging approach turned out pretty valuable for monitoring the progres
 
 Deno also made it simple to read binary files, which we needed for attaching a PDF to our emails:
 
-```typescript showLineNumbers=17
+```typescript showLineNumbers=18
 const pdf = Deno.readFileSync("./data-privacy-note.pdf");
 const pdfBase64 = btoa(String.fromCharCode(...pdf));
 ```
@@ -244,7 +244,7 @@ The template contained our email content, while our script focused on the delive
 
 Our script included comprehensive error handling and logging:
 
-```typescript showLineNumbers=42
+```typescript showLineNumbers=43
 try {
   const responses = await client.sendEmailBatchWithTemplates(emails);
   // Log all responses

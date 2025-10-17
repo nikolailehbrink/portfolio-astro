@@ -86,7 +86,7 @@ This gives you an object with file paths as keys and ToC entry arrays as values:
 
 This depends on your setup. With React Router 7, I map file paths to route slugs using the route manifest:
 
-```ts filename="app/lib/posts.ts" showLineNumbers=7
+```ts filename="app/lib/posts.ts" showLineNumbers=8
 export async function getPosts() {
   const { routes } = await import("virtual:react-router/server-build");
   let files = Object.entries(posts).map(([path, tableOfContents]) => {
@@ -189,7 +189,7 @@ function TocItem({
 
 Render the ToC conditionally inside your post layout.
 
-```tsx filename="app/routes/blog/layout.tsx" showLineNumbers=13
+```tsx filename="app/routes/blog/layout.tsx" showLineNumbers=14
 export default function PostLayout({ loaderData }: Route.ComponentProps) {
   const { post } = loaderData;
   const { tableOfContents } = post;
