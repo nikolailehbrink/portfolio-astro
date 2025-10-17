@@ -8,7 +8,8 @@
     "build": "astro build",
     "preview": "dotenv astro preview",
     "astro": "astro",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "vitest"
   },
   "dependencies": {
     "@ai-sdk/openai": "^2.0.24",
@@ -56,6 +57,7 @@
     "prettier-plugin-tailwindcss": "^0.6.14",
     "react-email": "4.2.12",
     "shiki": "3.13.0",
-    "tw-animate-css": "^1.3.8"
+    "tw-animate-css": "^1.3.8",
+    "vitest": "^3.2.4"
   }
 }
