@@ -18,7 +18,7 @@ import Skeleton from "@/components/Skeleton.astro";
 
 type Props = CollectionEntry<"blog">["data"] & {
   readingTime: ReadingTime;
-  tableOfContents: TocEntry[];
+  headings: TocEntry[];
 };
 
 const {
@@ -31,7 +31,7 @@ const {
   readingTime,
   tags,
   draft,
-  tableOfContents,
+  headings,
 } = Astro.props;
 const authors = await getEntries(authorsReferences);
 const { pathname } = Astro.url;
@@ -169,14 +169,15 @@ const formattedModificationDate = modificationDate
         }
         <slot />
       </section>
-      <TableOfContents
-        class={`rounded-xl border bg-neutral-900 bg-linear-to-b shadow-xl
-          offset-border max-xl:order-first md:col-start-2 xl:sticky xl:top-16
-          xl:col-start-3 xl:max-h-[calc(100dvh_-_--spacing(24))] xl:max-w-xs
-          xl:overflow-y-auto`}
-        maxDepth={3}
-        outline={tableOfContents}
-      />
+      {
+        headings.length > 0 && (
+          <TableOfContents
+            class={`rounded-xl border bg-neutral-900 bg-linear-to-b shadow-xl offset-border max-xl:order-first md:col-start-2 xl:sticky xl:top-16 xl:col-start-3 xl:max-h-[calc(100dvh_-_--spacing(24))] xl:max-w-xs xl:overflow-y-auto`}
+            maxDepth={3}
+            headings={headings}
+          />
+        )
+      }
     </div>
     <div class="flex justify-center *:max-w-6xl">
       <script

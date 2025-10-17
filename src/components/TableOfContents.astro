@@ -5,11 +5,11 @@ import TocItem from "./TocItem.astro";
 import type { TocEntry } from "@/lib/posts";
 
 type Props = {
-  outline: Array<TocEntry>;
+  headings: Array<TocEntry>;
   maxDepth: number;
 } & HTMLAttributes<"nav">;
 
-const { outline, maxDepth, class: className, ...props } = Astro.props;
+const { headings, maxDepth, class: className, ...props } = Astro.props;
 ---
 
 <nav class={cn("p-6 pb-4", className)} {...props}>
@@ -23,6 +23,6 @@ const { outline, maxDepth, class: className, ...props } = Astro.props;
       sm:prose-a:text-sm prose-ol:my-2 prose-ol:list-none prose-ol:pl-6
       prose-li:my-2 prose-li:px-0"
   >
-    {outline.map((entry) => <TocItem {...entry} />)}
+    {headings.map((entry) => <TocItem {...entry} />)}
   </ol>
 </nav>

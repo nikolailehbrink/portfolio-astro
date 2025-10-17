@@ -63,7 +63,7 @@ function diveChildren(item: TocEntry, depth: number): TocEntry[] {
   }
 }
 
-export function generateToc(
+export function generateNestedHeadings(
   headings: MarkdownHeading[],
   options?: { maxDepth?: number },
 ) {
@@ -103,4 +103,13 @@ export function generateToc(
     }
   }
   return toc;
+}
+
+export function generatePostHeadings(headings: MarkdownHeading[]): TocEntry[] {
+  const sanitizedHeadings = headings.map((heading) =>
+    heading.text.startsWith("#")
+      ? { ...heading, text: heading.text.substring(1) }
+      : heading,
+  );
+  return generateNestedHeadings(sanitizedHeadings);
 }
