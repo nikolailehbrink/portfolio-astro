@@ -1,12 +1,17 @@
 ---
 export const prerender = false;
-import ChatComponent from "@/components/react/chat/index";
+
 import { AI_CHAT_MESSAGE_LIMIT } from "@/consts";
 import RootLayout from "@/layouts/RootLayout.astro";
+import ChatComponent from "@/components/react/chat/Chat.tsx";
 
 const messageCount = Astro.cookies.get("message_count")?.number() ?? 0;
+const disableChat = messageCount >= AI_CHAT_MESSAGE_LIMIT;
+
+console.log(Astro.cookies.get("message_count"));
+console.log(JSON.stringify(Astro.cookies, null, 2));
 ---
 
 <RootLayout>
-  {messageCount >= AI_CHAT_MESSAGE_LIMIT ? null : <ChatComponent client:load />}
+  <ChatComponent disableChat={disableChat} client:load />
 </RootLayout>
