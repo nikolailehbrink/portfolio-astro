@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "dev:email": "email dev --dir src/components/react/emails",
-    "build": "astro build",
+    "build": "astro build --remote",
     "preview": "dotenv astro preview",
     "astro": "astro",
     "format": "prettier --write .",
