@@ -2,6 +2,7 @@
 import type { RemoteImageProps } from "astro:assets";
 import type { LocalImageProps } from "astro:assets";
 import { Image } from "astro:assets";
+import ImageZoom from "./react/ImageZoom";
 
 type Props = LocalImageProps | RemoteImageProps;
 
@@ -9,7 +10,9 @@ const props = Astro.props;
 ---
 
 <figure>
-  <Image {...props} class="rounded-xl" />
+  <ImageZoom client:visible>
+    <Image {...props} class="rounded-xl" />
+  </ImageZoom>
   <figcaption class="flex justify-center text-center">
     {props.alt}
   </figcaption>
