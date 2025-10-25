@@ -52,6 +52,9 @@ export default defineConfig({
     },
   },
   site: "https://portfolio-astro-jet-delta.vercel.app/",
+  redirects: {
+    "/blog/tailwind-css-tips": "/blog/tailwindcss-v3-tips",
+  },
   integrations: [
     mdx({
       optimize: {
