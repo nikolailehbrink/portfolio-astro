@@ -57,7 +57,7 @@ export default defineConfig({
   integrations: [
     mdx({
       optimize: {
-        ignoreElementNames: ["pre", "img"],
+        ignoreElementNames: ["pre", "img", "a"],
       },
     }),
     sitemap({
