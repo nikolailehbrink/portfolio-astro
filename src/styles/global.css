@@ -142,19 +142,32 @@
 }
 
 :not(pre) > code {
-  @apply bg-muted rounded-lg border border-neutral-700 px-1.5 py-0.5 text-sm font-normal before:content-none after:content-none;
+  @apply rounded-lg border border-neutral-700 bg-muted px-1.5 py-0.5 text-sm font-normal before:content-none after:content-none;
 }
 
 @utility offset-border {
-  @apply ring-border ring-offset-background ring ring-offset-2;
-}
-
-@utility bg-pattern-15 {
-  background-image: url("data:image/svg+xml,%3Csvg width='10' height='10' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23FFFFFF' fill-opacity='0.15' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
+  @apply ring ring-border ring-offset-2 ring-offset-background;
 }
 
 @utility animate-up {
-  @apply animate-in fade-in-0 slide-in-from-bottom-30 duration-500;
+  @apply animate-in duration-500 fade-in-0 slide-in-from-bottom-30;
+}
+
+/* Use with pattern-5 and use [--pattern-color:var(--color-foreground)]/5 for custom colors */
+@utility pattern-* {
+  --pattern-color: rgba(255, 255, 255, calc(--value(integer) / 100));
+
+  background-image: repeating-linear-gradient(
+    315deg,
+    var(--pattern-color) 0,
+    var(--pattern-color) 1px,
+    transparent 0,
+    transparent 50%
+  );
+
+  /* Even spacing */
+  background-size: 10px 10px;
+  background-attachment: fixed;
 }
 
 @layer base {
@@ -164,7 +177,7 @@
 
   /* Shiki */
   pre.astro-code {
-    @apply bg-neutral-900! grid rounded-xl border border-neutral-800 px-4 py-2.5 text-sm;
+    @apply grid rounded-xl border border-neutral-800 bg-neutral-900! px-4 py-2.5 text-sm;
     code {
       @apply flex flex-col;
     }
@@ -180,7 +193,7 @@
       .line {
         &::before {
           counter-increment: step;
-          @apply text-foreground/25 -order-2 mr-3 inline-flex w-[2ch] justify-end content-[counter(step)];
+          @apply -order-2 mr-3 inline-flex w-[2ch] justify-end text-foreground/25 content-[counter(step)];
         }
       }
     }
