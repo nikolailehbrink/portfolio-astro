@@ -9,8 +9,8 @@ type Props = LocalImageProps | RemoteImageProps;
 const props = Astro.props;
 ---
 
-<figure>
-  <ImageZoom client:visible>
+<figure class="xl:-ml-16">
+  <ImageZoom className="not-prose" client:visible>
     <Image {...props} class="rounded-xl" />
   </ImageZoom>
   <figcaption class="flex justify-center text-center">
