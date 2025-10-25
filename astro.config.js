@@ -8,6 +8,7 @@ import db from "@astrojs/db";
 import sitemap from "@astrojs/sitemap";
 import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
+import arraybuffer from "vite-plugin-arraybuffer";
 
 // https://docs.astro.build/en/guides/markdown-content/#heading-ids-and-plugins
 import { rehypeHeadingIds } from "@astrojs/markdown-remark";
@@ -66,7 +67,7 @@ export default defineConfig({
     db(),
   ],
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss(), arraybuffer()],
   },
   server: {
     open: true,

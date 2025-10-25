@@ -1,12 +1,11 @@
 ---
 import { type CollectionEntry, render } from "astro:content";
-import BlogPost from "../../layouts/BlogPost.astro";
+import BlogPost from "@/layouts/BlogPost.astro";
 import { estimateReadingTime } from "@/lib/readingTime";
 import { getPosts, generatePostHeadings } from "@/lib/posts";
 import BlogImage from "@/components/BlogImage.astro";
 import BlogLink from "@/components/BlogLink.astro";
 import CodeBlock from "@/components/CodeBlock.astro";
-import type { MarkdownHeading } from "astro";
 
 export async function getStaticPaths() {
   const posts = await getPosts();
