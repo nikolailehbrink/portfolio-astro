@@ -1,0 +1,2 @@
+patchedDependencies:
+  knip@5.66.3: patches/knip@5.66.3.patch
