@@ -1,0 +1,9 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/blog/tailwind-css-tips",
+      "destination": "/blog/tailwindcss-v3-tips"
+    }
+  ]
+}
