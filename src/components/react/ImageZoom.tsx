@@ -5,7 +5,7 @@ import Zoom, {
 import { cn } from '@/lib/utils';
 import { MagnifyingGlassPlusIcon } from '@phosphor-icons/react/dist/ssr/MagnifyingGlassPlus';
 
-export type ImageZoomProps = UncontrolledProps & {
+type ImageZoomProps = UncontrolledProps & {
   isZoomed?: ControlledProps['isZoomed'];
   onZoomChange?: ControlledProps['onZoomChange'];
   className?: string;

@@ -63,7 +63,7 @@ function diveChildren(item: TocEntry, depth: number): TocEntry[] {
   }
 }
 
-export function generateNestedHeadings(
+function generateNestedHeadings(
   headings: MarkdownHeading[],
   options?: { maxDepth?: number },
 ) {
