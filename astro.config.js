@@ -62,6 +62,7 @@ export default defineConfig({
     }),
     sitemap({
       changefreq: "weekly",
+      filter: (page) => !page.includes("/newsletter/"),
     }),
     react(),
     db(),
