@@ -1,8 +1,6 @@
 import type { KnipConfig } from "knip";
 
 export default {
-  // TODO: Why is the Vitest plugin not picking it up automatically?
-  entry: ["**/*.test.ts"],
   compilers: {
     css: (text: string) => {
       // https://github.com/webpro-nl/knip/issues/1008#issuecomment-2756572278
