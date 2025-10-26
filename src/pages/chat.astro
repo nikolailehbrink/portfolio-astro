@@ -7,11 +7,8 @@ import ChatComponent from "@/components/react/chat/Chat.tsx";
 
 const messageCount = Astro.cookies.get("message_count")?.number() ?? 0;
 const disableChat = messageCount >= AI_CHAT_MESSAGE_LIMIT;
-
-console.log(Astro.cookies.get("message_count"));
-console.log(JSON.stringify(Astro.cookies, null, 2));
 ---
 
 <RootLayout>
-  <ChatComponent disableChat={disableChat} client:load />
+  <ChatComponent isChatDisabled={disableChat} client:load />
 </RootLayout>

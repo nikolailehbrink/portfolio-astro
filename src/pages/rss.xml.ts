@@ -1,4 +1,4 @@
-import { getCollection, getEntry } from "astro:content";
+import { getEntry } from "astro:content";
 import rss from "@astrojs/rss";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 import type { APIRoute } from "astro";

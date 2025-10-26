@@ -9,7 +9,7 @@ import { llamaindex } from "@llamaindex/vercel";
 import { LlamaCloudIndex } from "llama-cloud-services";
 import { track } from "@vercel/analytics/server";
 import type { APIRoute } from "astro";
-import { AI_CHAT_MESSAGE_LIMIT, SECONDS_TO_CHAT_AGAIN } from "@/consts";
+import { AI_CHAT_MESSAGE_LIMIT } from "@/consts";
 
 export const maxDuration = 30;
 export const prerender = false;
@@ -19,7 +19,7 @@ const openai = createOpenAI({
 });
 
 export const POST: APIRoute = async ({ request, cookies }) => {
-  const { messages }: { messages: UIMessage[] } = await request.json();
+  const { messages }: { messages: Array<UIMessage> } = await request.json();
   const messageCount = cookies.get("message_count")?.number();
   await track("submit-ai-message");
 

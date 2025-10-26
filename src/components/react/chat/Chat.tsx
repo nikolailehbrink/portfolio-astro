@@ -6,19 +6,15 @@ import { useChat } from "@ai-sdk/react";
 import { useState, type FormEvent } from "react";
 
 export default function Chat({
-  disableChat,
+  isChatDisabled,
   messageCountResetDate,
 }: {
-  disableChat: boolean;
+  isChatDisabled: boolean;
   messageCountResetDate?: Date;
 }) {
   const [input, setInput] = useState("");
-  const { messages, sendMessage, stop, status, regenerate } = useChat({
-    onFinish() {
-      console.log("Message finished");
-    },
-  });
-  console.log(status);
+
+  const { messages, sendMessage, stop, status, regenerate } = useChat();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -36,10 +32,10 @@ export default function Chat({
       <Body
         messages={messages}
         status={status}
-        disabled={disableChat}
+        isDisabled={isChatDisabled}
         messageCountResetDate={messageCountResetDate}
       />
-      {!disableChat ? (
+      {!isChatDisabled ? (
         <>
           <div className="flex justify-center gap-2">
             {EXAMPLE_MESSAGES.map(({ heading, message, icon: Icon }) => (
@@ -60,7 +56,7 @@ export default function Chat({
             regenerate={regenerate}
             status={status}
             stop={stop}
-            disabled={disableChat}
+            isInputDisabled={isChatDisabled}
           />
         </>
       ) : null}

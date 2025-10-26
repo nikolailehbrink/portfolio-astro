@@ -13,12 +13,12 @@ export default function Actions({
   input,
   handleSubmit,
   handleInputChange,
-  disabled = false,
+  isInputDisabled = false,
 }: Pick<UseChatHelpers<UIMessage>, "status" | "stop" | "regenerate"> & {
   handleSubmit: React.ComponentProps<"form">["onSubmit"];
   input: string;
   handleInputChange: React.ComponentProps<"input">["onChange"];
-  disabled?: boolean;
+  isInputDisabled?: boolean;
 }) {
   return (
     <form onSubmit={handleSubmit} className="flex gap-2 pr-4">
@@ -26,7 +26,7 @@ export default function Actions({
         name="prompt"
         value={input}
         onChange={handleInputChange}
-        disabled={disabled}
+        disabled={isInputDisabled}
         aria-label="Type your message here"
       />
       {status === "error" && (
@@ -43,7 +43,7 @@ export default function Actions({
           aria-label="Send message"
           type="submit"
           size="icon"
-          disabled={disabled || !input || input.length < 2}
+          disabled={isInputDisabled || !input || input.length < 2}
         >
           <PaperPlaneTiltIcon weight="duotone" size={24} />
         </Button>
@@ -54,7 +54,7 @@ export default function Actions({
           type="button"
           size="icon"
           onClick={stop}
-          disabled={disabled || status === "submitted"}
+          disabled={isInputDisabled || status === "submitted"}
         >
           <PauseIcon size={24} weight="duotone" />
         </Button>

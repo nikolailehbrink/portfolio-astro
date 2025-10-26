@@ -12,8 +12,14 @@ export default {
   },
   ignoreBinaries: ["dotenv"],
   ignoreFiles: ["src/layouts/LegalLayout.astro"],
-  // llamaindex/vercel throws error without llamaindex package and @react-email/preview-server is used for email previews only
-  ignoreDependencies: ["@react-email/preview-server", "llamaindex"],
+  // llamaindex/vercel throws error without llamaindex package
+  // @react-email/preview-server is used for email previews only
+  // @typescript-eslint/parser is used to make ESLint VSCode Extension work in Astro files: https://github.com/ota-meshi/eslint-plugin-astro?tab=readme-ov-file#-installation
+  ignoreDependencies: [
+    "@react-email/preview-server",
+    "llamaindex",
+    "@typescript-eslint/parser",
+  ],
   // https://github.com/webpro-nl/knip/issues/1149#issuecomment-2994091874
   commitlint: true,
 } satisfies KnipConfig;

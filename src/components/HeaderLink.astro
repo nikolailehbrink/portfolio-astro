@@ -8,7 +8,7 @@ type Props = Omit<HTMLAttributes<"a">, "href"> & NavigationLink;
 const { class: className, path, icon: Icon, label, ...props } = Astro.props;
 
 const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, "");
-const subpath = pathname.match(/[^\/]+/g);
+const subpath = pathname.match(/[^/]+/g);
 const isActive = path === pathname || path === "/" + (subpath?.[0] || "");
 ---
 
@@ -21,6 +21,7 @@ const isActive = path === pathname || path === "/" + (subpath?.[0] || "");
       ? "border-neutral-700 bg-neutral-800 text-neutral-200"
       : `border-muted bg-neutral-900 text-muted-foreground
         hover:border-neutral-700 hover:bg-neutral-800 max-sm:px-2`,
+    className,
   )}
   {...props}
 >

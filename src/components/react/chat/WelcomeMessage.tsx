@@ -19,6 +19,7 @@ export default function WelcomeMessage({
       </p>
       {showCloseButton && (
         <button
+          type="button"
           onClick={() => setShowWelcomeMessage(false)}
           aria-label="Close note"
           className="absolute top-0 right-0 cursor-pointer rounded-se-xl

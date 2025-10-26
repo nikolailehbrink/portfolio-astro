@@ -11,10 +11,10 @@ const CLASSES = {
  * Parse line numbers from a string like "1,3,4-5,7-9"
  * Returns an array of line numbers (1-indexed)
  */
-function parseLineNumbers(lineNumbersStr: string): number[] {
+function parseLineNumbers(lineNumbersStr: string): Array<number> {
   if (!lineNumbersStr) return [];
 
-  const result: number[] = [];
+  const result: Array<number> = [];
 
   // Split by commas
   const parts = lineNumbersStr.split(",");
@@ -44,7 +44,7 @@ function parseLineNumbers(lineNumbersStr: string): number[] {
   return result;
 }
 
-interface TransformerMetaLineDiffOptions {
+type TransformerMetaLineDiffOptions = {
   /**
    * Class for added lines
    * @default 'diff-add'
@@ -62,7 +62,7 @@ interface TransformerMetaLineDiffOptions {
    * @default 'has-diff'
    */
   hasDiffClassName?: string;
-}
+};
 
 /**
  * Allow using `add={1,3,4-5} remove={9-11`} in the code snippet meta to mark added and removed lines.
@@ -115,13 +115,13 @@ function transformerMetaDiff(
   };
 }
 
-interface TransformerMetaHighlightOptions {
+type TransformerMetaHighlightOptions = {
   /**
    * Class for highlighted lines
    * @default 'highlighted'
    */
   highlightClassName?: string;
-}
+};
 
 /**
  * Allow using `highlight={1,3,4-5}` in the code snippet meta to mark highlighted lines.

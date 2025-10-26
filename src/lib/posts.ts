@@ -54,7 +54,7 @@ export async function getBlogTags() {
 
 export type TocEntry = MarkdownHeading & { children: Array<TocEntry> };
 
-function diveChildren(item: TocEntry, depth: number): TocEntry[] {
+function diveChildren(item: TocEntry, depth: number): Array<TocEntry> {
   if (depth === 1) {
     return item.children;
   } else {
@@ -64,7 +64,7 @@ function diveChildren(item: TocEntry, depth: number): TocEntry[] {
 }
 
 function generateNestedHeadings(
-  headings: MarkdownHeading[],
+  headings: Array<MarkdownHeading>,
   options?: { maxDepth?: number },
 ) {
   headings = headings.filter(
@@ -105,7 +105,9 @@ function generateNestedHeadings(
   return toc;
 }
 
-export function generatePostHeadings(headings: MarkdownHeading[]): TocEntry[] {
+export function generatePostHeadings(
+  headings: Array<MarkdownHeading>,
+): Array<TocEntry> {
   const sanitizedHeadings = headings.map((heading) =>
     heading.text.startsWith("#")
       ? { ...heading, text: heading.text.substring(1) }

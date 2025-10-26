@@ -10,24 +10,22 @@ import LimitHitMessage from "./LimitHitMessage";
 export default function Body({
   messages,
   status,
-  disabled = false,
+  isDisabled = false,
   messageCountResetDate,
 }: Pick<UseChatHelpers<UIMessage>, "messages" | "status"> & {
-  disabled?: boolean;
+  isDisabled?: boolean;
   messageCountResetDate?: Date;
 }) {
   const [showWelcomeMessage, setShowWelcomeMessage] = useState(true);
   const containerRef = useScrollToBottom();
-  console.log(messages);
 
-  const lastMessage = messages[messages.length - 1];
   return (
     <div
       ref={containerRef}
       className="flex grow flex-col gap-4 overflow-y-auto pr-4"
     >
       {/* Don't show if user starts new chat with Message Limit hit */}
-      {showWelcomeMessage && !(messages.length === 0 && disabled === true) ? (
+      {showWelcomeMessage && !(messages.length === 0 && isDisabled === true) ? (
         <WelcomeMessage
           setShowWelcomeMessage={setShowWelcomeMessage}
           showCloseButton={messages.length > 0}
@@ -61,7 +59,7 @@ export default function Body({
         // This is because the tool call in api/chat sets the status to "streaming"
         // but doesn't immediately has text content, resulting in an empty textbox before the text is eventually streamed
         status === "streaming") && <LoadingMessage />}
-      {disabled && (
+      {isDisabled && (
         <LimitHitMessage messageCountResetDate={messageCountResetDate} />
       )}
       {status === "error" && <ErrorMessage />}

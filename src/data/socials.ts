@@ -25,4 +25,4 @@ export const SOCIAL_LINKS = [
     href: "https://x.com/nikolailehbrink",
     logo: XLogoIcon,
   },
-] as const satisfies SocialProfile[];
+] as const satisfies Array<SocialProfile>;

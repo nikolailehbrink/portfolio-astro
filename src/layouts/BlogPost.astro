@@ -2,7 +2,6 @@
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 import BaseHead from "../components/BaseHead.astro";
-import { getEntries } from "astro:content";
 import RootLayout from "./RootLayout.astro";
 import type { ReadingTime } from "@/lib/readingTime";
 import type { TocEntry } from "@/lib/posts";
@@ -18,7 +17,7 @@ import Skeleton from "@/components/Skeleton.astro";
 
 type Props = CollectionEntry<"blog">["data"] & {
   readingTime: ReadingTime;
-  headings: TocEntry[];
+  headings: Array<TocEntry>;
 };
 
 const {
@@ -27,13 +26,11 @@ const {
   publicationDate,
   modificationDate,
   cover,
-  authors: authorsReferences,
   readingTime,
   tags,
   draft,
   headings,
 } = Astro.props;
-const authors = await getEntries(authorsReferences);
 const { pathname } = Astro.url;
 
 const formattedPublicationDate = formatDate(publicationDate);
@@ -173,7 +170,6 @@ const formattedModificationDate = modificationDate
         headings.length > 0 && (
           <TableOfContents
             class={`rounded-xl border bg-neutral-900 bg-linear-to-b shadow-xl offset-border max-xl:order-first md:col-start-2 xl:sticky xl:top-16 xl:col-start-3 xl:max-h-[calc(100dvh_-_--spacing(24))] xl:max-w-xs xl:overflow-y-auto`}
-            maxDepth={3}
             headings={headings}
           />
         )

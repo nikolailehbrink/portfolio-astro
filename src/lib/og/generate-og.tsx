@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unknown-property */
+
 import { ImageResponse } from "@vercel/og";
 import InterLatin400 from "./inter-latin-400-normal.ttf?arraybuffer";
 import InterLatin700 from "./inter-latin-700-normal.ttf?arraybuffer";

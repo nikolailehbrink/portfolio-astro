@@ -7,6 +7,7 @@ export default function CopyToClipboardButton({ code }: { code: string }) {
 
   return (
     <button
+      type="button"
       className={cn(
         `absolute top-2 right-2 rounded-md bg-neutral-800 p-2 py-1.5 text-right
         font-sans text-xs text-neutral-400 opacity-0 shadow-sm transition-all

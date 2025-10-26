@@ -6,10 +6,9 @@ import type { TocEntry } from "@/lib/posts";
 
 type Props = {
   headings: Array<TocEntry>;
-  maxDepth: number;
 } & HTMLAttributes<"nav">;
 
-const { headings, maxDepth, class: className, ...props } = Astro.props;
+const { headings, class: className, ...props } = Astro.props;
 ---
 
 <nav class={cn("p-6 pb-4", className)} {...props}>

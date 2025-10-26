@@ -25,4 +25,4 @@ export const NAVIGATION_LINKS = [
     path: "/chat",
     icon: ChatsCircleIcon,
   },
-] as const satisfies NavigationLink[];
+] as const satisfies Array<NavigationLink>;
