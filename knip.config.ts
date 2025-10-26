@@ -13,10 +13,12 @@ export default {
   // llamaindex/vercel throws error without llamaindex package
   // @react-email/preview-server is used for email previews only
   // @typescript-eslint/parser is used to make ESLint VSCode Extension work in Astro files: https://github.com/ota-meshi/eslint-plugin-astro?tab=readme-ov-file#-installation
+  // @astrojs/check is used for Astro type checking
   ignoreDependencies: [
     "@react-email/preview-server",
     "llamaindex",
     "@typescript-eslint/parser",
+    "@astrojs/check",
   ],
   // https://github.com/webpro-nl/knip/issues/1149#issuecomment-2994091874
   commitlint: true,
