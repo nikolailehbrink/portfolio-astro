@@ -9,7 +9,7 @@
     "preview": "dotenv astro preview",
     "astro": "astro",
     "format": "prettier --write .",
-    "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
+    "lint": "eslint",
     "lint:inspect": "eslint --inspect-config",
     "lint:staged": "lint-staged",
     "test": "vitest",
