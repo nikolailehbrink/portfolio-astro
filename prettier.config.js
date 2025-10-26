@@ -21,6 +21,12 @@ export default {
         parser: "astro",
       },
     },
+    {
+      files: "*svg",
+      options: {
+        parser: "html",
+      },
+    },
   ],
   semi: true,
   tabWidth: 2,

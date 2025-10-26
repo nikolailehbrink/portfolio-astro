@@ -6,7 +6,8 @@
   "tailwindCSS.classAttributes": ["class", "className", "tw"],
   "tailwindCSS.classFunctions": ["cn", "clsx", "cva", "tw", "autolinkHeadings"],
   "files.associations": {
-    "*.css": "tailwindcss"
+    "*.css": "tailwindcss",
+    "*.svg": "html"
   },
   "editor.quickSuggestions": {
     "strings": "on"
