@@ -3,11 +3,41 @@ import { slugify } from "./utils";
 import type { MarkdownHeading } from "astro";
 import { estimateReadingTime } from "./readingTime";
 
+// Type for blog posts with reading time
+type BlogPost = {
+  id: string;
+  slug: string;
+  body: string;
+  collection: string;
+  data: {
+    title: string;
+    description: string;
+    draft?: boolean;
+    publicationDate: Date;
+    modificationDate?: Date;
+    tags?: Array<string>;
+    authors?: Array<string>;
+  };
+  readingTime: number;
+};
+
+// Cache for processed posts to avoid reprocessing
+let postsCache: Array<BlogPost> | null = null;
+let lastCacheTime = 0;
+const CACHE_DURATION = 1000 * 60 * 5; // 5 minutes
+
 export async function getPosts(options?: {
   take?: number;
   tag?: string | null;
 }) {
-  let posts = (
+  const now = Date.now();
+  
+  // Use cached posts if available and not expired (except in development)
+  if (postsCache && import.meta.env.PROD && (now - lastCacheTime) < CACHE_DURATION) {
+    return filterAndSortPosts(postsCache, options);
+  }
+
+  const posts = (
     await getCollection("blog", ({ data }) =>
       import.meta.env.PROD ? data.draft !== true : true,
     )
@@ -16,25 +46,52 @@ export async function getPosts(options?: {
     readingTime: estimateReadingTime(post.body),
   }));
 
+  // Cache the processed posts in production
+  if (import.meta.env.PROD) {
+    postsCache = posts;
+    lastCacheTime = now;
+  }
+
+  return filterAndSortPosts(posts, options);
+}
+
+function filterAndSortPosts(posts: Array<BlogPost>, options?: {
+  take?: number;
+  tag?: string | null;
+}) {
   const { tag, take } = options || {};
 
+  // Start with original array reference for efficiency
+  let filteredPosts = posts;
+
+  // Only filter if tag is specified
   if (tag) {
-    posts = posts.filter((post) => post.data.tags?.includes(tag));
+    filteredPosts = posts.filter((post) => post.data.tags?.includes(tag));
   }
 
-  if (posts.length > 1) {
-    posts = posts.sort((a, b) => {
-      return (
-        b.data.publicationDate.getTime() - a.data.publicationDate.getTime()
-      );
-    });
+  // Only sort if we have multiple posts and they need sorting
+  if (filteredPosts.length > 1) {
+    // Check if already sorted to avoid unnecessary work
+    const isSorted = filteredPosts.every((post, i) => 
+      i === 0 || filteredPosts[i - 1].data.publicationDate >= post.data.publicationDate
+    );
+    
+    if (!isSorted) {
+      // Create copy only when we need to sort
+      filteredPosts = [...filteredPosts].sort((a, b) => {
+        return (
+          b.data.publicationDate.getTime() - a.data.publicationDate.getTime()
+        );
+      });
+    }
   }
 
-  if (take && take > 0) {
-    posts = posts.slice(0, take);
+  // Apply limit if specified
+  if (take && take > 0 && filteredPosts.length > take) {
+    filteredPosts = filteredPosts.slice(0, take);
   }
 
-  return posts;
+  return filteredPosts;
 }
 
 export async function getBlogTags() {

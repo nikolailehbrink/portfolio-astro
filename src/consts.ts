@@ -5,5 +5,6 @@ export const SITE_TITLE = "Astro Blog";
 export const SITE_DESCRIPTION = "Welcome to my website!";
 
 export const AI_CHAT_MESSAGE_LIMIT = import.meta.env.PROD ? 10 : 2;
+export const SECONDS_TO_CHAT_AGAIN = 24 * 60 * 60; // 24 hours in seconds
 
 export const locale = "en-US";

@@ -18,6 +18,10 @@ import type { ShikiTransformer } from "shiki";
  * ```
  * ````
  */
+
+// Pre-compile regex for better performance
+const FILENAME_REGEX = /filename="([^"]+)"/;
+
 export function transformerCodeBlock(): ShikiTransformer {
   return {
     name: "transformer-code-block",
@@ -31,16 +35,14 @@ export function transformerCodeBlock(): ShikiTransformer {
       // Process raw metadata if available
       const rawMeta = this.options.meta?.__raw;
       if (rawMeta) {
-        const metaPairs = rawMeta.split(" ");
-
-        // Handle noCopy flag
-        if (metaPairs.includes("noCopy")) {
+        // Use includes for noCopy check (more efficient than split)
+        if (rawMeta.includes("noCopy")) {
           metaData["data-no-copy"] = "true";
         }
 
-        // Extract filename using regex
-        const filenameMatch = rawMeta.match(/filename="([^"]+)"/);
-        if (filenameMatch && filenameMatch[1]) {
+        // Extract filename using pre-compiled regex
+        const filenameMatch = rawMeta.match(FILENAME_REGEX);
+        if (filenameMatch?.[1]) {
           metaData["data-filename"] = filenameMatch[1];
         }
       }

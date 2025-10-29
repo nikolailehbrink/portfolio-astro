@@ -1,6 +1,7 @@
 import { getInputProps } from "@conform-to/react";
 import { useForm } from "@conform-to/react/future";
 import { getZodConstraint } from "@conform-to/zod/v4/future";
+import { memo, useMemo } from "react";
 import { Label } from "./ui/label";
 import { CircleNotchIcon } from "@phosphor-icons/react/dist/ssr/CircleNotch";
 import { EnvelopeIcon } from "@phosphor-icons/react/dist/ssr/Envelope";
@@ -14,20 +15,26 @@ import { actions } from "astro:actions";
 import { useActionState } from "react";
 import { withState } from "@astrojs/react/actions";
 
-export default function NewsletterForm({
+type NewsletterFormProps = React.ComponentProps<"form"> & {
+  showText?: boolean;
+};
+
+const NewsletterForm = memo(function NewsletterForm({
   showText = true,
   className,
   ...props
-}: React.ComponentProps<"form"> & {
-  showText?: boolean;
-}) {
+}: NewsletterFormProps) {
   const [state, action, isPending] = useActionState(
     withState(actions.newsletter),
     null,
   );
+
+  // Memoize constraint calculation to avoid recalculating on every render
+  const constraint = useMemo(() => getZodConstraint(newsletterFormSchema), []);
+
   const { form, fields } = useForm({
     lastResult: state?.data?.result,
-    constraint: getZodConstraint(newsletterFormSchema),
+    constraint,
     // Validate field once user leaves the field
     shouldValidate: "onBlur",
     // Then, revalidate field as user types again
@@ -132,4 +139,6 @@ export default function NewsletterForm({
       )}
     </form>
   );
-}
+});
+
+export default NewsletterForm;
