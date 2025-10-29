@@ -1,3 +1,4 @@
+import { memo, useCallback } from 'react';
 import Zoom, {
   type ControlledProps,
   type UncontrolledProps,
@@ -12,9 +13,15 @@ type ImageZoomProps = UncontrolledProps & {
   backdropClassName?: string;
 };
 
-export default function ImageZoom({
-  className, backdropClassName, ...props
+// Memoize the component to prevent unnecessary re-renders
+const ImageZoom = memo(function ImageZoom({
+  className, backdropClassName, onZoomChange, ...props
 }: ImageZoomProps) {
+  // Memoize the zoom change handler
+  const handleZoomChange = useCallback((isZoomed: boolean) => {
+    onZoomChange?.(isZoomed);
+  }, [onZoomChange]);
+
   return (
     <div
       className={cn(
@@ -41,7 +48,10 @@ export default function ImageZoom({
           backdropClassName
         )}
         IconZoom={()=><MagnifyingGlassPlusIcon size={20} weight='duotone'  />}
+        onZoomChange={handleZoomChange}
         {...props} />
     </div>
   );
-}
+});
+
+export default ImageZoom;

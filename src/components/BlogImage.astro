@@ -4,16 +4,23 @@ import type { LocalImageProps } from "astro:assets";
 import { Image } from "astro:assets";
 import ImageZoom from "./react/ImageZoom";
 
-type Props = LocalImageProps | RemoteImageProps;
+type Props = (LocalImageProps | RemoteImageProps) & {
+  priority?: boolean;
+};
 
-const props = Astro.props;
+const { priority = false, ...imageProps } = Astro.props;
 ---
 
 <figure class="xl:-ml-16">
   <ImageZoom className="not-prose" client:visible>
-    <Image {...props} class="rounded-xl" />
+    <Image 
+      {...imageProps} 
+      class="rounded-xl" 
+      loading={priority ? "eager" : "lazy"}
+      decoding="async"
+    />
   </ImageZoom>
   <figcaption class="flex justify-center text-center">
-    {props.alt}
+    {imageProps.alt}
   </figcaption>
 </figure>

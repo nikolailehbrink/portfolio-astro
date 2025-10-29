@@ -70,6 +70,22 @@ export default defineConfig({
   ],
   vite: {
     plugins: [tailwindcss(), arraybuffer()],
+    build: {
+      // Optimize chunk size for better loading
+      rollupOptions: {
+        output: {
+          chunkFileNames: '_astro/[name]-[hash].js',
+          manualChunks: {
+            // Separate AI/chat related dependencies into their own chunk
+            'ai-chunk': ['@ai-sdk/openai', '@ai-sdk/react', 'ai'],
+            // Group UI components
+            'ui-chunk': ['@radix-ui/react-label', '@radix-ui/react-slot'],
+            // Separate email components (only include runtime dependencies)
+            'email-chunk': ['@react-email/components'],
+          }
+        }
+      }
+    }
   },
   server: {
     open: true,
