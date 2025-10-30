@@ -2,6 +2,7 @@ import Actions from "@/components/react/chat/Actions";
 import Body from "@/components/react/chat/Body";
 import ExampleMessage from "@/components/react/chat/ExampleMessage";
 import { EXAMPLE_MESSAGES } from "@/data/example-chat-messages";
+import type { MyUIMessage } from "@/pages/api/chat";
 import { useChat } from "@ai-sdk/react";
 import { useState, type FormEvent } from "react";
 
@@ -14,7 +15,8 @@ export default function Chat({
 }) {
   const [input, setInput] = useState("");
 
-  const { messages, sendMessage, stop, status, regenerate } = useChat();
+  const { messages, sendMessage, stop, status, regenerate } =
+    useChat<MyUIMessage>();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

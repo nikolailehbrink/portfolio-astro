@@ -4,6 +4,7 @@ import {
   smoothStream,
   stepCountIs,
   streamText,
+  type InferUITools,
   type ToolSet,
   type UIMessage,
 } from "ai";
@@ -41,8 +42,14 @@ function getTools() {
   } satisfies ToolSet;
 }
 
+export type MyUIMessage = UIMessage<
+  never,
+  never,
+  InferUITools<ReturnType<typeof getTools>>
+>;
+
 export const POST: APIRoute = async ({ request, cookies }) => {
-  const { messages }: { messages: Array<UIMessage> } = await request.json();
+  const { messages }: { messages: Array<MyUIMessage> } = await request.json();
   const messageCount = cookies.get("message_count")?.number();
   await track("submit-ai-message");
 

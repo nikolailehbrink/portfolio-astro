@@ -1,4 +1,4 @@
-import type { UIMessage, UseChatHelpers } from "@ai-sdk/react";
+import type { UseChatHelpers } from "@ai-sdk/react";
 import { useState } from "react";
 import { useScrollToBottom } from "@/hooks/useScrollToBottom";
 import LoadingMessage from "./LoadingMessage";
@@ -6,13 +6,14 @@ import WelcomeMessage from "./WelcomeMessage";
 import Message from "./Message";
 import ErrorMessage from "./ErrorMessage";
 import LimitHitMessage from "./LimitHitMessage";
+import type { MyUIMessage } from "@/pages/api/chat";
 
 export default function Body({
   messages,
   status,
   isDisabled = false,
   messageCountResetDate,
-}: Pick<UseChatHelpers<UIMessage>, "messages" | "status"> & {
+}: Pick<UseChatHelpers<MyUIMessage>, "messages" | "status"> & {
   isDisabled?: boolean;
   messageCountResetDate?: Date;
 }) {
