@@ -40,26 +40,19 @@ export default function Body({
               case "text":
                 return part.text;
               case "tool-queryTool": {
-                switch (part.state) {
-                  case "input-streaming":
-                    // This is streamed
-                    return <pre>{JSON.stringify(part.input, null, 2)}</pre>;
-                  case "input-available":
-                    return <pre>{JSON.stringify(part.input, null, 2)}</pre>;
-                  case "output-available":
-                    return <pre>{JSON.stringify(part.output, null, 2)}</pre>;
-                  case "output-error":
-                    return <div>Error: {part.errorText}</div>;
+                if (!part.output) {
+                  return (
+                    <span className="animate-pulse italic">
+                      Let me think about that...
+                    </span>
+                  );
                 }
               }
             }
           })}
         </Message>
       ))}
-      {(status === "submitted" ||
-        // This is because the tool call in api/chat sets the status to "streaming"
-        // but doesn't immediately has text content, resulting in an empty textbox before the text is eventually streamed
-        status === "streaming") && <LoadingMessage />}
+      {status === "submitted" && <LoadingMessage />}
       {isDisabled && (
         <LimitHitMessage messageCountResetDate={messageCountResetDate} />
       )}
