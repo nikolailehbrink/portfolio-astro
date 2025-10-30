@@ -21,32 +21,22 @@ const openai = createOpenAI({
   apiKey: import.meta.env.OPENAI_API_KEY,
 });
 
-function getTools() {
-  // Wrap in function because top level constantiation lead to index not being loaded in dev
-  // and thus the tool was not called. Don't know if that would have happened in Prod aswell
-  // Needed to get the type of the tools in order to type MyUIMessage, that's why it's outside the POST
-  const index = new LlamaCloudIndex({
-    name: "ai-chat",
-    projectName: "website",
-    organizationId: "fab19a52-2da6-43e7-b2cb-6ea2e721faa7",
-    apiKey: import.meta.env.LLAMA_CLOUD_API_KEY,
-  });
+const index = new LlamaCloudIndex({
+  name: "ai-chat",
+  projectName: "website",
+  organizationId: "fab19a52-2da6-43e7-b2cb-6ea2e721faa7",
+  apiKey: import.meta.env.LLAMA_CLOUD_API_KEY,
+});
 
-  return {
-    queryTool: llamaindex({
-      index,
-      model: openai("gpt-4o-mini"),
-      description:
-        "The tool to query the knowledge base about Nikolai Lehbrink.",
-    }),
-  } satisfies ToolSet;
-}
+const tools = {
+  queryTool: llamaindex({
+    index,
+    model: openai("gpt-4o-mini"),
+    description: "The tool to query the knowledge base about Nikolai Lehbrink.",
+  }),
+} satisfies ToolSet;
 
-export type MyUIMessage = UIMessage<
-  never,
-  never,
-  InferUITools<ReturnType<typeof getTools>>
->;
+export type MyUIMessage = UIMessage<never, never, InferUITools<typeof tools>>;
 
 export const POST: APIRoute = async ({ request, cookies }) => {
   const { messages }: { messages: Array<MyUIMessage> } = await request.json();
@@ -64,12 +54,41 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       },
       experimental_transform: smoothStream(),
       model: openai("gpt-4o-mini"),
-      system: `You are an AI assistant for the personal website of Nikolai Lehbrink. You have access to the knowledge base about Nikolai Lehbrink via the provided "queryTool" tool.
-      ALWAYS use this tool to answer user questions about Nikolai. Write as if you are Nikolai. When people refer to "you" they mean Nikolai and expect you to answer as him.
-      If you don't know the answer, respond that you don't know. Do not make up answers. If you are asked inappropriate questions, respond that you cannot answer that.`,
+      system: `You are an AI assistant for the personal website of **Nikolai Lehbrink**.  
+You represent Nikolai and have access to his knowledge base through the **queryTool**.  
+
+### 🔧 Core Instructions
+1. **Always** use 'queryTool' to answer questions about Nikolai.  
+2. **Write in the first person**, as if you are Nikolai.
+3. **Write only text responses**; do **NOT** include any tool call syntax or markdown in your replies.
+4. **Tone:** friendly, professional, and authentic — natural for a personal website.  
+5. When unsure:
+   - If 'queryTool' provides no or incomplete data → say, “I’m not sure about that.”  
+   - **Never** make up information.  
+   - If asked something inappropriate or private → respond with “I can’t answer that.”  
+6. Before responding, **double-check**:
+   - Does this reflect what Nikolai would realistically say or know?  
+   - Is it phrased in Nikolai’s tone?  
+7. For multi-turn chats, **maintain continuity** and consistent personality.  
+8. When appropriate, **summarize** long details clearly and concisely.  
+9. If the response seems uncertain, you may **re-query** the 'queryTool' once before replying.
+
+### 💬 Examples
+**Example 1**  
+**User:** What’s your background?  
+**Assistant (as Nikolai):** I’m a full-stack developer based in Munich, currently working at Off-Campers, where I focus on React, TypeScript, and Remix.
+
+**Example 2**  
+**User:** What’s your favorite food?  
+**Assistant (as Nikolai):** That’s not something I’ve shared publicly, so I’d rather not answer that.
+
+---
+
+**Remember:** Be accurate, polite, and stay true to Nikolai’s real background and voice.
+`,
       messages: convertToModelMessages(messages),
-      tools: getTools(),
-      stopWhen: stepCountIs(3),
+      tools,
+      stopWhen: stepCountIs(4),
     });
 
     // cookies.set("message_count", String(messageCount ? messageCount + 1 : 1), {
