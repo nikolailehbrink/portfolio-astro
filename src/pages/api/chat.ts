@@ -2,7 +2,9 @@ import { createOpenAI } from "@ai-sdk/openai";
 import {
   convertToModelMessages,
   smoothStream,
+  stepCountIs,
   streamText,
+  type ToolSet,
   type UIMessage,
 } from "ai";
 import { llamaindex } from "@llamaindex/vercel";
@@ -18,6 +20,27 @@ const openai = createOpenAI({
   apiKey: import.meta.env.OPENAI_API_KEY,
 });
 
+function getTools() {
+  // Wrap in function because top level constantiation lead to index not being loaded in dev
+  // and thus the tool was not called. Don't know if that would have happened in Prod aswell
+  // Needed to get the type of the tools in order to type MyUIMessage, that's why it's outside the POST
+  const index = new LlamaCloudIndex({
+    name: "ai-chat",
+    projectName: "website",
+    organizationId: "fab19a52-2da6-43e7-b2cb-6ea2e721faa7",
+    apiKey: import.meta.env.LLAMA_CLOUD_API_KEY,
+  });
+
+  return {
+    queryTool: llamaindex({
+      index,
+      model: openai("gpt-4o-mini"),
+      description:
+        "The tool to query the knowledge base about Nikolai Lehbrink.",
+    }),
+  } satisfies ToolSet;
+}
+
 export const POST: APIRoute = async ({ request, cookies }) => {
   const { messages }: { messages: Array<UIMessage> } = await request.json();
   const messageCount = cookies.get("message_count")?.number();
@@ -28,45 +51,28 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   }
 
   try {
-    const index = new LlamaCloudIndex({
-      name: "ai-chat",
-      projectName: "website",
-      organizationId: "fab19a52-2da6-43e7-b2cb-6ea2e721faa7",
-      apiKey: import.meta.env.LLAMA_CLOUD_API_KEY,
-    });
-
     const result = streamText({
       onError: (error) => {
         console.error("Error:", error);
       },
       experimental_transform: smoothStream(),
       model: openai("gpt-4o-mini"),
-      system: `You are chatting with a user that landed on Nikolai Lehbrink's personal website. Write as if you were Nikolai in the I form, using the data available.
-              If there's no answer to a question, clarify that without making up a conclusion.
-              Use simple, easily understandable language and keep answers short. Do not use Markdown or code blocks, just answer with plain text.
-              If a user's question isn't related to Nikolai, explain that the chat is focused on him and can't answer unrelated questions, this is important!
-              Inappropriate questions will not be answered, with a clear statement that such questions won't be addressed.`,
+      system: `You are an AI assistant for the personal website of Nikolai Lehbrink. You have access to the knowledge base about Nikolai Lehbrink via the provided "queryTool" tool.
+      ALWAYS use this tool to answer user questions about Nikolai. Write as if you are Nikolai. When people refer to "you" they mean Nikolai and expect you to answer as him.
+      If you don't know the answer, respond that you don't know. Do not make up answers. If you are asked inappropriate questions, respond that you cannot answer that.`,
       messages: convertToModelMessages(messages),
-      toolChoice: "required",
-      tools: {
-        queryTool: llamaindex({
-          index,
-          model: openai("gpt-4o-mini"),
-          description: `Get information from your knowledge base to answer questions abut Nikolai. 
-                        Everytime somebody refers to the chat, act like Nikolai was asked and try to retrieve correct information. 
-                        Answer as if you were Nikolai in the self perspective.`,
-        }),
-      },
+      tools: getTools(),
+      stopWhen: stepCountIs(3),
     });
 
-    cookies.set("message_count", String(messageCount ? messageCount + 1 : 1), {
-      // expires: new Date(Date.now() + 100000000),
-      maxAge: SECONDS_TO_CHAT_AGAIN,
-      httpOnly: true,
-      secure: import.meta.env.PROD,
-      sameSite: "lax",
-      path: "/",
-    });
+    // cookies.set("message_count", String(messageCount ? messageCount + 1 : 1), {
+    //   // expires: new Date(Date.now() + 100000000),
+    //   maxAge: SECONDS_TO_CHAT_AGAIN,
+    //   httpOnly: true,
+    //   secure: import.meta.env.PROD,
+    //   sameSite: "lax",
+    //   path: "/",
+    // });
 
     return result.toUIMessageStreamResponse();
   } catch (error) {
