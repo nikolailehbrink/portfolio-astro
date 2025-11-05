@@ -33,7 +33,6 @@ export default function Body({
         />
       ) : null}
       {messages.map(({ id, role, parts }) => (
-        // See comment below
         <Message key={id} role={role}>
           {parts.map((part) => {
             switch (part.type) {
