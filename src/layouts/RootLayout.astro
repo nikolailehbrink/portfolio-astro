@@ -47,12 +47,13 @@ const canonicalURL = new URL(pathname, Astro.site);
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
 
-    <!-- Vercel Analytics -->
-    <Analytics />
-
     <slot name="head">
       <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
     </slot>
+
+    <!-- Vercel Analytics -->
+    <!-- Has to come last, because otherwise it would trigger the next tags coming in the body..?! The fuck: https://stackoverflow.com/questions/21643740/head-tags-are-appearing-inside-body  -->
+    <Analytics />
   </head>
   <body class="font-sans">
     <div
