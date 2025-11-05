@@ -12,8 +12,10 @@ type Props = {
 
 const { title, description, image = FallbackImage } = Astro.props;
 
-const ogImage =
-  typeof image === "string" ? image : new URL(image.src, Astro.url).href;
+const ogImageURL = new URL(
+  typeof image === "string" ? image : image.src,
+  Astro.url,
+).href;
 
 const separator = "|";
 const titleWithTemplate = `${title} ${separator} ${SITE_TITLE}`;
@@ -29,13 +31,13 @@ const titleWithTemplate = `${title} ${separator} ${SITE_TITLE}`;
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={ogImage} />
+<meta property="og:image" content={ogImageURL} />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={ogImage} />
+<meta property="twitter:image" content={ogImageURL} />
 
 <slot />
