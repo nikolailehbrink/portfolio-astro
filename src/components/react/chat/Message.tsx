@@ -1,5 +1,5 @@
 import type { UIMessage } from "ai";
-// import Avatar from "@/components/Avatar";
+import Avatar from "@/components/react/chat/Avatar";
 import { UserIcon } from "@phosphor-icons/react/dist/ssr/User";
 import { cn } from "@/lib/utils";
 
@@ -25,7 +25,8 @@ export default function Message({
     >
       <div
         className={cn(
-          "sticky top-0 flex size-[38px] shrink-0 rounded-full border",
+          `sticky top-0 flex size-[38px] shrink-0 overflow-hidden rounded-full
+          border`,
           {
             "items-center justify-center border-neutral-700 bg-neutral-800":
               role === "user",
@@ -35,7 +36,7 @@ export default function Message({
         {role === "user" ? (
           <UserIcon size={20} weight="duotone" />
         ) : (
-          <UserIcon size={20} weight="duotone" />
+          <Avatar className="size-10 object-center" />
         )}
       </div>
       <MessageBubble role={role}>{children}</MessageBubble>
