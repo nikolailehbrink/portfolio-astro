@@ -17,6 +17,11 @@ import NewsletterForm from "@/components/react/NewsletterForm";
 import ContactForm from "@/components/react/ContactForm";
 import PostTeaser from "@/components/PostTeaser.astro";
 import { getPosts } from "@/lib/posts";
+import BaseHead from "@/components/BaseHead.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
+import Schema from "@/components/Schema.astro";
+import { SOCIAL_LINKS } from "@/data/socials";
+import type { Person, WithContext } from "schema-dts";
 
 const [career, projects, posts] = await Promise.all([
   getCollection("career"),
@@ -28,9 +33,25 @@ const workExperiences = career.filter((item) => item.data.type === "work");
 const educationExperiences = career.filter(
   (item) => item.data.type === "education",
 );
+
+const item = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  url: Astro.site?.href ?? Astro.url.href,
+  name: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  sameAs: SOCIAL_LINKS.map(({ href }) => href),
+  contactPoint: {
+    "@type": "ContactPoint",
+    email: "mail@nikolailehbr.ink",
+  },
+} satisfies WithContext<Person>;
 ---
 
 <RootLayout>
+  <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} slot="head">
+    <Schema item={item} />
+  </BaseHead>
   <div class="flex flex-col items-start gap-8 sm:items-center sm:gap-16">
     <div
       class="relative flex animate-in items-center justify-center duration-1000

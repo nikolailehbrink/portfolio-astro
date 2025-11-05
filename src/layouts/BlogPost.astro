@@ -14,6 +14,8 @@ import { PencilIcon } from "@phosphor-icons/react/dist/ssr/Pencil";
 import TableOfContents from "@/components/TableOfContents.astro";
 import ViewCount from "@/components/ViewCount.astro";
 import Skeleton from "@/components/Skeleton.astro";
+import Schema from "@/components/Schema.astro";
+import { getEntries } from "astro:content";
 
 type Props = CollectionEntry<"blog">["data"] & {
   readingTime: ReadingTime;
@@ -30,17 +32,50 @@ const {
   tags,
   draft,
   headings,
+  authors: authorsReferences,
 } = Astro.props;
-const { pathname } = Astro.url;
+
+const authors = await getEntries(authorsReferences);
+
+const { pathname, origin, href } = Astro.url;
 
 const formattedPublicationDate = formatDate(publicationDate);
 const formattedModificationDate = modificationDate
   ? formatDate(modificationDate)
   : null;
+const coverImageURL = new URL(cover ? cover.src : `${pathname}/og.png`, origin)
+  .href;
 ---
 
 <RootLayout>
-  <BaseHead title={title} description={description} image={cover} slot="head" />
+  <BaseHead
+    title={title}
+    description={description}
+    image={coverImageURL}
+    slot="head"
+  >
+    <Schema
+      item={{
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        headline: title,
+        description,
+        datePublished: publicationDate.toISOString(),
+        dateModified: modificationDate?.toISOString(),
+        image: coverImageURL,
+        mainEntityOfPage: href,
+        publisher: {
+          "@type": "Person",
+          name: "Nikolai Lehbrink",
+        },
+        author: {
+          "@type": "Person",
+          name: authors[0].data.name,
+        },
+        keywords: tags?.join(", "),
+      }}
+    />
+  </BaseHead>
   <article class="flex w-full flex-col gap-12">
     <header
       class={cn(
