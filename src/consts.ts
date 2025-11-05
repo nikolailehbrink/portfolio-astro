@@ -1,8 +1,6 @@
-// Place any global data in this file.
-// You can import this data from anywhere in your site by using the `import` keyword.
-
-export const SITE_TITLE = "Astro Blog";
-export const SITE_DESCRIPTION = "Welcome to my website!";
+export const SITE_TITLE = "Nikolai Lehbrink";
+export const SITE_DESCRIPTION =
+  "Passionate fullstack developer dedicated to creating beautiful and functional web applications.";
 
 export const AI_CHAT_MESSAGE_LIMIT = import.meta.env.PROD ? 10 : 2;
 
